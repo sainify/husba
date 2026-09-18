@@ -1,0 +1,24 @@
+name = "husba-beads-api"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+workers_dev = true
+# Preserve any dashboard-managed secrets/variables during Git deployments.
+keep_vars = true
+
+[vars]
+ENVIRONMENT = "production"
+CLOUDINARY_CLOUD_NAME = ""
+ALLOWED_ORIGINS = ""
+
+# Account-specific values are intentionally absent.
+# Add ADMIN_EMAIL, ADMIN_PASSWORD and SESSION_SECRET
+# as encrypted Worker secrets/variables so Git deployments never overwrite or expose them.
+
+# Add the new Cloudflare D1 binding after creating the database:
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "husba-beads"
+# database_id = "PASTE_NEW_D1_DATABASE_ID_HERE"
+# migrations_dir = "migrations"
+
+# Trigger Cloudflare Workers Build

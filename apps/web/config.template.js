@@ -1,0 +1,7 @@
+window.HUSBA_CONFIG = Object.freeze({
+  API_BASE: __API_BASE_URL__,
+  TURNSTILE_SITE_KEY: __TURNSTILE_SITE_KEY__,
+  SITE_URL: __SITE_URL__,
+  DEMO_MODE: __DEMO_MODE__,
+});
+

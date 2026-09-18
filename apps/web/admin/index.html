@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Admin · HUSBA Beads</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#201917">
+  <meta name="application-name" content="HUSBA Admin">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="HUSBA Admin">
+  <link rel="manifest" href="/admin/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/admin/icons/admin-192.png">
+  <link rel="icon" href="/assets/media/brand/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="/assets/css/admin.css">
+</head>
+<body class="admin-body">
+  <div class="pull-indicator" data-pull-indicator aria-hidden="true"><span>↓</span><b>Pull to refresh</b></div>
+  <div class="admin-shell">
+    <aside class="admin-sidebar" data-admin-sidebar>
+      <button class="admin-sidebar-close" type="button" data-admin-menu aria-label="Close menu">×</button>
+      <a class="wordmark" href="/admin/" aria-label="HUSBA Beads admin home"><span class="wordmark__monogram" aria-hidden="true">UB</span><span class="wordmark__text"><span class="wordmark__name">HUSBA</span><span class="wordmark__sub">Admin</span></span></a>
+      <nav class="admin-nav" aria-label="Admin sections">
+        <button class="is-active" type="button" data-view-button="dashboard">Overview</button>
+        <button type="button" data-view-button="products">Products</button>
+        <button type="button" data-view-button="categories">Categories</button>
+        <button type="button" data-view-button="videos">Product videos</button>
+        <button type="button" data-view-button="enquiries">Enquiries</button>
+        <button type="button" data-view-button="content">Website content</button>
+              </nav>
+      <div class="admin-sidebar__bottom">
+        <div>Protected admin area</div>
+        <a href="/" target="_blank" rel="noopener">View website ↗</a>
+        <button class="sidebar-logout" type="button" data-logout>Sign out</button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-topbar">
+        <div class="admin-topbar__actions">
+          <button class="icon-button admin-mobile-menu" type="button" data-admin-menu aria-label="Open admin menu">☰</button>
+          <button class="icon-button admin-back" type="button" data-admin-back aria-label="Back to overview" hidden>←</button>
+          <div class="admin-app-title"><span class="admin-app-mark">UB</span><div><small>HUSBA Admin</small><h1 class="admin-topbar__title" data-view-title>Overview</h1></div></div>
+        </div>
+        <div class="admin-topbar__actions">
+          <span class="connection-badge" data-connection>Checking connection</span>
+          <button class="button button--ghost button--small admin-install" type="button" data-install-app hidden>Install app</button>
+          <button class="button button--ghost button--small" type="button" data-refresh>Refresh</button>
+        </div>
+      </header>
+
+      <div class="admin-content">
+        <section class="admin-view" data-view="dashboard">
+          <div class="admin-heading">
+            <div>
+              <h1>Good to see you.</h1>
+              <p>Everything important across HUSBA Beads, at a glance.</p>
+            </div>
+          </div>
+
+          <div class="stat-grid" data-stats>
+            <div class="stat-card"><span>Products</span><strong>—</strong></div>
+            <div class="stat-card"><span>New enquiries</span><strong>—</strong></div>
+            <div class="stat-card"><span>Product films</span><strong>—</strong></div>
+            <div class="stat-card"><span>Categories</span><strong>—</strong></div>
+          </div>
+
+          <div class="admin-grid">
+            <section class="admin-panel">
+              <div class="admin-panel__head">
+                <h2>Recent enquiries</h2>
+                <button class="table-action" type="button" data-jump-view="enquiries">View all</button>
+              </div>
+              <div class="admin-panel__body recent-list" data-recent-enquiries>
+                <div class="admin-empty">
+                  <div>
+                    <strong>Loading enquiries</strong>
+                    <span>Please wait a moment.</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="admin-panel">
+              <div class="admin-panel__head"><h2>Quick actions</h2></div>
+              <div class="admin-panel__body">
+                <div class="admin-nav">
+                  <button type="button" data-create="product">Add a product</button>
+                  <button type="button" data-create="video">Add a product video</button>
+                  <button type="button" data-jump-view="content">Update contact details</button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="admin-view" data-view="products" hidden>
+          <div class="admin-heading">
+            <div><h1>Products</h1><p>Edit product details, visibility, up to five images and one video.</p></div>
+            <button class="button" type="button" data-create="product">Add product</button>
+          </div>
+          <div class="admin-panel">
+            <div class="admin-panel__body">
+              <div class="admin-toolbar">
+                <label class="search-field">
+                  <span class="honeypot">Search products</span>
+                  <input type="search" placeholder="Search by product name or code" data-admin-search="products" autocomplete="off">
+                </label>
+                <div class="admin-filter-row" aria-label="Product filters">
+                  <select class="select-clean" data-product-category-filter aria-label="Filter by category">
+                    <option value="">All categories</option>
+                  </select>
+                  <select class="select-clean" data-product-status-filter aria-label="Filter by availability">
+                    <option value="">Any availability</option>
+                    <option value="available">Available</option>
+                    <option value="sold_out">Sold out</option>
+                    <option value="made_to_order">Made to order</option>
+                  </select>
+                  <select class="select-clean" data-product-visibility-filter aria-label="Filter by visibility">
+                    <option value="">All visibility</option>
+                    <option value="published">Published</option>
+                    <option value="hidden">Hidden</option>
+                  </select>
+                  <button class="table-action" type="button" data-clear-product-filters>Clear</button>
+                </div>
+                <span class="admin-result-count" data-product-result-count></span>
+              </div>
+              <div class="table-wrap" data-products-table></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="admin-view" data-view="categories" hidden>
+          <div class="admin-heading">
+            <div><h1>Categories</h1><p>Organize the collection and control category order.</p></div>
+            <button class="button" type="button" data-create="category">Add category</button>
+          </div>
+          <div class="admin-panel">
+            <div class="admin-panel__body">
+              <div class="table-wrap" data-categories-table></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="admin-view" data-view="videos" hidden>
+          <div class="admin-heading">
+            <div><h1>Product videos</h1><p>Paste Cloudinary URLs to create the full-screen product-film experience.</p></div>
+            <button class="button" type="button" data-create="video">Add video</button>
+          </div>
+          <div class="admin-panel">
+            <div class="admin-panel__body">
+              <div class="table-wrap" data-videos-table></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="admin-view" data-view="enquiries" hidden>
+          <div class="admin-heading">
+            <div><h1>Enquiries</h1><p>Review each request and keep its follow-up status clear.</p></div>
+          </div>
+          <div class="admin-panel">
+            <div class="admin-panel__body">
+              <div class="admin-toolbar">
+                <label class="search-field">
+                  <span class="honeypot">Search enquiries</span>
+                  <input type="search" placeholder="Name, phone or reference" data-admin-search="enquiries">
+                </label>
+                <label>
+                  <span class="honeypot">Filter status</span>
+                  <select class="select-clean" data-enquiry-filter>
+                    <option value="">All statuses</option>
+                    <option value="new">New</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="closed">Closed</option>
+                  </select>
+                </label>
+              </div>
+              <div class="table-wrap" data-enquiries-table></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="admin-view" data-view="content" hidden>
+          <div class="admin-heading">
+            <div><h1>Website content</h1><p>Edit the announcement, hero banner/video, homepage text and public contact information.</p></div>
+          </div>
+          <form class="admin-panel" data-settings-form>
+            <div class="admin-panel__body">
+              <div class="content-settings-stack">
+                <fieldset class="content-settings-card">
+                  <legend>Announcement bar</legend>
+                  <p class="content-settings-card__intro">Add up to 3 messages. Empty messages are ignored. If all 3 are empty, the announcement bar disappears completely.</p>
+                  <div class="announcement-admin__grid">
+                    <textarea name="announcement_1" maxlength="500" rows="3" placeholder="Message 1"></textarea>
+                    <textarea name="announcement_2" maxlength="500" rows="3" placeholder="Message 2"></textarea>
+                    <textarea name="announcement_3" maxlength="500" rows="3" placeholder="Message 3"></textarea>
+                  </div>
+                </fieldset>
+
+                <fieldset class="content-settings-card">
+                  <legend>Homepage hero</legend>
+                  <div class="form-grid">
+                <div class="field field--full announcement-admin"></div>
+                <div class="field field--full"><label for="hero-title">Homepage title</label><input id="hero-title" name="hero_title" maxlength="100"></div>
+                <div class="field field--full"><label for="hero-copy">Homepage introduction</label><textarea id="hero-copy" name="hero_copy" maxlength="360"></textarea></div>
+                <div class="field"><label for="hero-media-type">Homepage hero media</label><select id="hero-media-type" name="hero_media_type"><option value="banner">Banner images</option><option value="video">Video</option></select><small>Choose whether the homepage hero uses your banner images or the homepage video.</small></div>
+                <div class="field"><label for="hero-cta-text">Hero button text</label><input id="hero-cta-text" name="hero_cta_text" maxlength="60" placeholder="Shop now"></div>
+                <div class="field field--full"><label for="hero-cta-url">Hero button link</label><input id="hero-cta-url" name="hero_cta_url" maxlength="300" placeholder="/collections/"><small>Use /collections/ or a secure https:// link.</small></div>
+                <div class="field"><label for="hero-eyebrow">Hero small heading</label><input id="hero-eyebrow" name="hero_eyebrow" maxlength="180"></div>
+                <div class="field"><label for="hero-image-alt">Hero image description</label><input id="hero-image-alt" name="hero_image_alt" maxlength="180"></div>
+                <div class="field field--full"><label for="hero-image-url">Hero image Cloudinary URL</label><input id="hero-image-url" name="hero_image_url" type="url" placeholder="https://res.cloudinary.com/..."></div>
+                <div class="field field--full"><label for="hero-video-url">Homepage top video Cloudinary URL</label><input id="hero-video-url" name="hero_video_url" type="url" placeholder="https://res.cloudinary.com/.../video/upload/..."><small>Autoplays silently in the top banner. Leave blank to show the image banner.</small></div>
+                <div class="field field--full"><label for="hero-video-poster-url">Top video cover image Cloudinary URL</label><input id="hero-video-poster-url" name="hero_video_poster_url" type="url" placeholder="https://res.cloudinary.com/.../image/upload/..."><small>Shown while the video loads.</small></div>
+                <div class="field field--full"><label>Website logo Cloudinary URL</label><input name="logo_url" type="url" placeholder="https://res.cloudinary.com/..."></div>
+                <div class="field field--full"><label>Homepage banner image 1</label><input name="banner_image_1" type="url" placeholder="Cloudinary image URL"></div>
+                <div class="field field--full"><label>Homepage banner image 2</label><input name="banner_image_2" type="url" placeholder="Cloudinary image URL"></div>
+                <div class="field field--full"><label>Homepage banner image 3</label><input name="banner_image_3" type="url" placeholder="Cloudinary image URL"></div>
+                <div class="field field--full"><label>Homepage banner image 4</label><input name="banner_image_4" type="url" placeholder="Cloudinary image URL"></div>
+                <div class="field field--full"><label>Homepage banner image 5</label><input name="banner_image_5" type="url" placeholder="Cloudinary image URL"></div>
+                                  </div>
+                </fieldset>
+
+                <fieldset class="content-settings-card">
+                  <legend>Homepage sections</legend>
+                  <div class="form-grid">
+                <div class="field"><label>Products small heading</label><input name="featured_eyebrow"></div>
+                <div class="field"><label>Products heading</label><input name="featured_title"></div>
+                <div class="field field--full"><label>Products introduction</label><textarea name="featured_copy"></textarea></div>
+                <div class="field"><label>Video small heading</label><input name="video_eyebrow"></div>
+                <div class="field"><label>Video heading</label><input name="video_title"></div>
+                <div class="field field--full"><label>Video introduction</label><textarea name="video_copy"></textarea></div>
+                <div class="field"><label>Categories small heading</label><input name="categories_eyebrow"></div>
+                <div class="field"><label>Categories heading</label><input name="categories_title"></div>
+                <div class="field field--full"><label>Categories introduction</label><textarea name="categories_copy"></textarea></div>
+                <div class="field"><label>Enquiry small heading</label><input name="enquiry_eyebrow"></div>
+                <div class="field"><label>Enquiry heading</label><input name="enquiry_title"></div>
+                <div class="field field--full"><label>Enquiry introduction</label><textarea name="enquiry_copy"></textarea></div>
+                <div class="field field--full"><label>Footer description</label><textarea name="footer_description"></textarea></div>
+                <label class="checkbox-field"><input type="checkbox" name="show_products_section" checked><span>Show products section</span></label>
+                <label class="checkbox-field"><input type="checkbox" name="show_videos_section" checked><span>Show videos section</span></label>
+                <label class="checkbox-field"><input type="checkbox" name="show_categories_section" checked><span>Show categories section</span></label>
+                <label class="checkbox-field"><input type="checkbox" name="show_enquiry_section" checked><span>Show enquiry section</span></label>
+                <div class="field field--full"><label>SEO page title</label><input name="seo_title" maxlength="160"></div>
+                <div class="field field--full"><label>SEO description</label><textarea name="seo_description" maxlength="600"></textarea></div>
+                <div class="field field--full"><label>SEO sharing image URL</label><input name="seo_image_url" type="url" placeholder="Cloudinary image URL"></div>
+                  </div>
+                </fieldset>
+
+                <fieldset class="content-settings-card">
+                  <legend>Contact & social</legend>
+                  <div class="form-grid">
+                <div class="field"><label for="whatsapp-number">WhatsApp number</label><input id="whatsapp-number" name="whatsapp_number" inputmode="tel" placeholder="Country code + number"></div>
+                <div class="field"><label for="whatsapp-display">Displayed WhatsApp number</label><input id="whatsapp-display" name="whatsapp_display"></div>
+                <div class="field"><label for="email">Public email</label><input id="email" name="email" type="email"></div>
+                <div class="field"><label for="location">Location</label><input id="location" name="location"></div>
+                <div class="field field--full"><label>Footer social links</label><small>Add only the platforms you want visible. Empty URLs stay hidden.</small></div>
+                <div class="field"><label for="whatsapp-social-url">WhatsApp icon URL</label><input id="whatsapp-social-url" name="whatsapp_social_url" type="url" placeholder="https://wa.me/..."></div>
+                <div class="field"><label for="instagram-url">Instagram URL</label><input id="instagram-url" name="instagram_url" type="url" placeholder="https://instagram.com/..."></div>
+                <div class="field"><label for="facebook-url">Facebook URL</label><input id="facebook-url" name="facebook_url" type="url" placeholder="https://facebook.com/..."></div>
+                <div class="field"><label for="youtube-url">YouTube URL</label><input id="youtube-url" name="youtube_url" type="url" placeholder="https://youtube.com/..."></div>
+                <div class="field"><label for="pinterest-url">Pinterest URL</label><input id="pinterest-url" name="pinterest_url" type="url" placeholder="https://pinterest.com/..."></div>
+                <div class="field"><label for="tiktok-url">TikTok URL</label><input id="tiktok-url" name="tiktok_url" type="url" placeholder="https://tiktok.com/@..."></div>
+                <div class="field field--full"><button class="button" type="submit">Save website content</button><p class="form-status" data-settings-status role="status"></p></div>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+          </form>
+        </section>
+
+
+      </div>
+    </main>
+  </div>
+  <button class="admin-sidebar-scrim" type="button" data-admin-menu data-admin-sidebar-scrim aria-label="Close menu" hidden></button>
+
+  <nav class="admin-bottom-nav" aria-label="Admin app navigation">
+    <button class="is-active" type="button" data-view-button="dashboard"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 11 12 3l9 8v10h-6v-6H9v6H3Z"/></svg></span><small>Home</small></button>
+    <button type="button" data-view-button="products"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg></span><small>Products</small><b data-product-badge hidden>0</b></button>
+    <button type="button" data-view-button="enquiries"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 5h18v14H3zM3 6l9 7 9-7"/></svg></span><small>Enquiries</small><b data-enquiry-badge hidden>0</b></button>
+    <button type="button" data-view-button="content"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M6 6l12 12M18 6 6 18"/></svg></span><small>Website</small></button>
+    <button type="button" data-admin-menu><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></span><small>More</small></button>
+  </nav>
+
+  <div class="access-gate" data-access-screen>
+    <div class="access-card">
+      <img class="admin-login-logo" src="/assets/media/brand/original-logo.webp" alt="HUSBA Beads">
+      <span class="admin-login-label">Private workspace</span>
+
+      <div data-login-panel>
+        <h2>Admin sign in</h2>
+        <p data-access-message>Sign in to manage your HUSBA website.</p>
+
+        <form class="admin-login-form" data-login-form>
+          <div class="field">
+            <label for="admin-email">Email</label>
+            <input id="admin-email" name="email" type="email" autocomplete="username" required>
+          </div>
+
+          <div class="field">
+            <label for="admin-password">Password</label>
+            <input id="admin-password" name="password" type="password" autocomplete="current-password" minlength="12" required>
+          </div>
+
+          <button class="button" type="submit" data-login-submit>Sign in</button>
+          <p class="form-status is-error" data-login-status role="status"></p>
+        </form>
+      </div>
+
+      <div data-loading-panel hidden>
+        <span class="admin-loading-orbit" aria-hidden="true"></span>
+        <span class="admin-loading-kicker">HUSBA ADMIN</span>
+        <h2>Preparing your workspace</h2>
+        <p>Connecting securely and loading your website controls…</p>
+      </div>
+    </div>
+  </div>
+
+  <dialog class="admin-dialog" data-resource-dialog>
+    <div class="dialog-head">
+      <h2 data-dialog-title>Edit item</h2>
+      <button class="dialog-close" type="button" data-close-admin-dialog aria-label="Close">×</button>
+    </div>
+    <form data-resource-form>
+      <div class="dialog-body" data-dialog-fields></div>
+      <div class="dialog-body" data-dialog-error role="status"></div>
+      <div class="dialog-actions">
+        <button class="button button--ghost" type="button" data-close-admin-dialog>Cancel</button>
+        <button class="button" type="submit" data-save-resource>Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="admin-dialog" data-confirm-dialog>
+    <div class="dialog-head">
+      <h2>Confirm removal</h2>
+      <button class="dialog-close" type="button" data-cancel-delete aria-label="Close">×</button>
+    </div>
+    <div class="dialog-body">
+      <p data-confirm-message>This item will be removed.</p>
+    </div>
+    <div class="dialog-actions">
+      <button class="button button--ghost" type="button" data-cancel-delete>Cancel</button>
+      <button class="button" type="button" data-confirm-delete>Remove</button>
+    </div>
+  </dialog>
+
+  <div class="toast-region" aria-live="polite"></div>
+  <div class="offline-banner" data-offline-banner role="status" hidden>You’re offline. Saved data remains visible; changes need internet.</div>
+  <section class="offline-screen" data-offline-screen hidden><div><span>Cloud offline</span><h2>No internet connection</h2><p>Reconnect to manage or publish website content.</p><button class="button" type="button" data-retry-connection>Try again</button></div></section>
+
+  <script src="/config.js"></script>
+  <script type="module" src="/assets/js/admin.js"></script>
+</body>
+</html>

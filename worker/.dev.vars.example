@@ -1,0 +1,8 @@
+ENVIRONMENT=development
+ALLOWED_ORIGINS=http://localhost:4173
+DEV_ADMIN_TOKEN=choose-a-long-random-local-token
+TURNSTILE_SECRET_KEY=
+CF_ACCESS_TEAM_DOMAIN=
+CF_ACCESS_AUD=
+ADMIN_EMAIL=
+

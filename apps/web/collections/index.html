@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Collections · HUSBA Beads</title>
+  <meta name="description" content="Explore handmade beaded jewellery and custom pieces from HUSBA Beads. Select a piece and send a personal enquiry.">
+  <meta name="theme-color" content="#fff9fa">
+  <link rel="canonical" href="/collections/">
+  <link rel="icon" href="/assets/media/brand/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="page-curtain" aria-hidden="true"><span class="page-curtain__mark">UB</span></div>
+  <site-header></site-header>
+  <main id="main">
+    <header class="page-hero page-hero--shop">
+      <div class="container page-hero__inner">
+        <div><span class="eyebrow">Shop HUSBA</span><h1>Our collection</h1></div>
+        <div class="page-hero__copy"><p>Discover handcrafted pieces made for you.</p></div>
+      </div>
+    </header>
+    <section class="filters" aria-label="Collection filters">
+      <div class="container filters__inner">
+        <label class="search-field"><span class="honeypot">Search products</span><input type="search" placeholder="Search by name or code" data-search></label>
+        <div class="filter-chips" data-filter-chips><button class="chip is-active" type="button">All</button></div>
+        <label><span class="honeypot">Sort collection</span><select class="select-clean" data-sort><option value="featured">Featured</option><option value="newest">Newest</option><option value="name">Name A–Z</option></select></label>
+      </div>
+    </section>
+    <section class="section section--tight">
+      <div class="container">
+        <div class="results-meta"><span data-result-count>Loading pieces…</span><button class="text-link" type="button" data-open-enquiry data-enquiry-type="custom">Request a custom piece ↗</button></div>
+        <div class="product-grid" data-product-grid aria-live="polite"><div class="skeleton-grid"><div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div></div></div>
+      </div>
+    </section>
+  </main>
+  <site-footer></site-footer>
+  <script src="/config.js"></script>
+  <script type="module" src="/assets/js/collections.js"></script>
+</body>
+</html>
