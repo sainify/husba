@@ -34,7 +34,7 @@ const template = await readFile(templatePath, "utf8");
 // Production-safe fallbacks keep phone/Codespaces builds connected even when
 // Cloudflare build variables are temporarily unavailable. These are public
 // origins, not credentials; explicit environment values still take priority.
-const apiBase = cleanOrigin(process.env.API_BASE_URL || "");
+const apiBase = cleanOrigin(process.env.API_BASE_URL || "https://husba-beads-api.husainsathi13.workers.dev");
 const siteUrl = cleanOrigin(process.env.SITE_URL || process.env.CF_PAGES_URL || "");
 const config = template
   .replace("__API_BASE_URL__", JSON.stringify(apiBase))
