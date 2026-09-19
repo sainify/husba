@@ -415,17 +415,54 @@ const requireAdmin = async (request, env) => {
 
 const handleAdminLogin = async (request, env) => {
   if (request.method !== "POST") throw new HttpError(405, "Method not allowed.");
+
   const credential = await currentAdminCredential(env);
-  const configuredEmail = credential.email;
-  if (!configuredEmail || (!credential.stored && !credential.password)) throw new HttpError(503, "Admin login is not configured yet.");
-  if (!credential.stored && credential.password.length < 12) throw new HttpError(503, "Admin login is not configured securely.");
+  const configuredEmail = String(credential.email || "").trim().toLowerCase();
+  const envEmail = String(env.ADMIN_EMAIL || "").trim().toLowerCase();
+  const envPassword = String(env.ADMIN_PASSWORD || "");
+
+  if (!configuredEmail && !envEmail) throw new HttpError(503, "Admin login is not configured yet.");
+  if (!credential.stored && !envPassword) throw new HttpError(503, "Admin login is not configured yet.");
+  if (!credential.stored && envPassword.length < 12) throw new HttpError(503, "Admin login is not configured securely.");
+
   const input = await readJson(request, 16_000);
   const email = sanitizeText(input.email, 160).toLowerCase();
   const password = String(input.password || "");
-  if (!email || !password || email !== configuredEmail || !(await credentialMatches(credential, password))) throw new HttpError(401, "Incorrect email or password.");
+
+  const matchesStored = credential.stored
+    ? email === configuredEmail && await credentialMatches(credential, password)
+    : false;
+
+  const matchesBootstrap = Boolean(
+    envEmail &&
+    envPassword &&
+    email === envEmail &&
+    password === envPassword
+  );
+
+  if (!email || !password || (!matchesStored && !matchesBootstrap)) {
+    throw new HttpError(401, "Incorrect email or password.");
+  }
+
+  const loginEmail = matchesBootstrap ? envEmail : configuredEmail;
+
+  if (matchesBootstrap && !matchesStored) {
+    const db = requireDatabase(env);
+    await ensureAdminCredentials(db);
+    const salt = base64UrlEncode(crypto.getRandomValues(new Uint8Array(18)));
+    const hash = await passwordHash(envPassword, salt);
+    await db.prepare(`INSERT INTO admin_credentials(id, email, password_hash, password_salt, updated_at)
+      VALUES(1, ?, ?, ?, CURRENT_TIMESTAMP)
+      ON CONFLICT(id) DO UPDATE SET email=excluded.email, password_hash=excluded.password_hash,
+      password_salt=excluded.password_salt, updated_at=CURRENT_TIMESTAMP`)
+      .bind(envEmail, hash, salt)
+      .run();
+  }
+
   const expiresAt = Math.floor(Date.now() / 1000) + 365 * 24 * 60 * 60;
-  const token = await signSession(configuredEmail, expiresAt, env);
-  return json({ authenticated: true, email: configuredEmail, token, expires_at: expiresAt }, 200, {
+  const token = await signSession(loginEmail, expiresAt, env);
+
+  return json({ authenticated: true, email: loginEmail, token, expires_at: expiresAt }, 200, {
     "Cache-Control": "no-store",
     "Set-Cookie": adminSessionCookie(token),
   });
