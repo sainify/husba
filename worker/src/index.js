@@ -446,19 +446,6 @@ const handleAdminLogin = async (request, env) => {
 
   const loginEmail = matchesBootstrap ? envEmail : configuredEmail;
 
-  if (matchesBootstrap && !matchesStored) {
-    const db = requireDatabase(env);
-    await ensureAdminCredentials(db);
-    const salt = base64UrlEncode(crypto.getRandomValues(new Uint8Array(18)));
-    const hash = await passwordHash(envPassword, salt);
-    await db.prepare(`INSERT INTO admin_credentials(id, email, password_hash, password_salt, updated_at)
-      VALUES(1, ?, ?, ?, CURRENT_TIMESTAMP)
-      ON CONFLICT(id) DO UPDATE SET email=excluded.email, password_hash=excluded.password_hash,
-      password_salt=excluded.password_salt, updated_at=CURRENT_TIMESTAMP`)
-      .bind(envEmail, hash, salt)
-      .run();
-  }
-
   const expiresAt = Math.floor(Date.now() / 1000) + 365 * 24 * 60 * 60;
   const token = await signSession(loginEmail, expiresAt, env);
 
