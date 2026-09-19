@@ -613,7 +613,6 @@ const adminDashboard = async (env) => {
 };
 
 const handleAdmin = async (request, env, url, parts, identity) => {
-  const db = requireDatabase(env);
   const resource = parts[0] || "session";
   const id = parts[1] || "";
   const method = request.method;
@@ -627,6 +626,9 @@ const handleAdmin = async (request, env, url, parts, identity) => {
       { "Cache-Control": "private, no-store", "Set-Cookie": adminSessionCookie(token) },
     );
   }
+
+  const db = requireDatabase(env);
+
   if (resource === "dashboard" && method === "GET") return json({ dashboard: await adminDashboard(env) });
 
   if (resource === "account" && method === "PUT") {
