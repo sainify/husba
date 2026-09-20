@@ -1,0 +1,21 @@
+{
+  "name": "UZVÉRA Admin",
+  "short_name": "UZVÉRA Admin",
+  "description": "Private mobile workspace for managing UZVÉRA Beads.",
+  "id": "/admin/",
+  "start_url": "/admin/",
+  "scope": "/admin/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "background_color": "#f8f3ef",
+  "theme_color": "#201917",
+  "shortcuts": [
+    { "name": "Products", "short_name": "Products", "url": "/admin/#products", "icons": [{ "src": "/admin/icons/admin-192.png", "sizes": "192x192" }] },
+    { "name": "Enquiries", "short_name": "Enquiries", "url": "/admin/#enquiries", "icons": [{ "src": "/admin/icons/admin-192.png", "sizes": "192x192" }] }
+  ],
+  "icons": [
+    { "src": "/admin/icons/admin-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/admin/icons/admin-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
