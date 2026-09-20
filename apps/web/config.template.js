@@ -4,4 +4,3 @@ window.HUSBA_CONFIG = Object.freeze({
   SITE_URL: __SITE_URL__,
   DEMO_MODE: __DEMO_MODE__,
 });
-

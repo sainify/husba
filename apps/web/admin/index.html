@@ -22,16 +22,18 @@
     <aside class="admin-sidebar" data-admin-sidebar>
       <button class="admin-sidebar-close" type="button" data-admin-menu aria-label="Close menu">×</button>
       <a class="wordmark" href="/admin/" aria-label="HUSBA Beads admin home"><span class="wordmark__monogram" aria-hidden="true">UB</span><span class="wordmark__text"><span class="wordmark__name">HUSBA</span><span class="wordmark__sub">Admin</span></span></a>
+      <div class="admin-sidebar__section-label">Workspace</div>
       <nav class="admin-nav" aria-label="Admin sections">
         <button class="is-active" type="button" data-view-button="dashboard">Overview</button>
         <button type="button" data-view-button="products">Products</button>
         <button type="button" data-view-button="categories">Categories</button>
+        <div class="admin-sidebar__section-label admin-sidebar__section-label--nav">Content</div>
         <button type="button" data-view-button="videos">Product videos</button>
         <button type="button" data-view-button="enquiries">Enquiries</button>
         <button type="button" data-view-button="content">Website content</button>
               </nav>
       <div class="admin-sidebar__bottom">
-        <div>Protected admin area</div>
+        <div class="admin-sidebar__secure"><span class="admin-sidebar__secure-dot"></span><span><strong>Protected workspace</strong><small>Secure admin session</small></span></div>
         <a href="/" target="_blank" rel="noopener">View website ↗</a>
         <button class="sidebar-logout" type="button" data-logout>Sign out</button>
       </div>
@@ -53,8 +55,9 @@
 
       <div class="admin-content">
         <section class="admin-view" data-view="dashboard">
-          <div class="admin-heading">
+          <div class="admin-heading admin-dashboard-heading">
             <div>
+              <span class="admin-eyebrow">HUSBA BEADS · CONTROL CENTER</span>
               <h1>Good to see you.</h1>
               <p>Everything important across HUSBA Beads, at a glance.</p>
             </div>

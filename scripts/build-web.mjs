@@ -44,6 +44,7 @@ const config = template
   .replace("__DEMO_MODE__", JSON.stringify(process.env.DEMO_MODE !== "false"));
 
 await writeFile(path.join(output, "config.js"), config);
+await fs.rm(path.join(output, "_redirects"), { force: true });
 await rm(templatePath);
 
 const headersPath = path.join(output, "_headers");
@@ -65,8 +66,5 @@ if (siteUrl) {
 } else {
   await writeFile(path.join(output, "robots.txt"), "User-agent: *\nAllow: /\nDisallow: /admin/\n");
 }
-
-// remove generated _redirects to prevent Cloudflare Workers redirect validation loops
-await fs.rm(path.join(output, "_redirects"), { force: true });
 
 console.log(`Built HUSBA Beads frontend at ${output}`);
