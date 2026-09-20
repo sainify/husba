@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Admin · HUSBA Beads</title>
   <meta name="robots" content="noindex, nofollow">
-  <meta name="theme-color" content="#201917">
+  <meta name="theme-color" content="#171515">
   <meta name="application-name" content="HUSBA Admin">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -13,6 +13,9 @@
   <link rel="manifest" href="/admin/manifest.webmanifest">
   <link rel="apple-touch-icon" href="/admin/icons/admin-192.png">
   <link rel="icon" href="/assets/media/brand/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="/assets/css/styles.css">
   <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
@@ -31,10 +34,11 @@
         <button type="button" data-view-button="videos">Product videos</button>
         <button type="button" data-view-button="enquiries">Enquiries</button>
         <button type="button" data-view-button="content">Website content</button>
-              </nav>
+      </nav>
       <div class="admin-sidebar__bottom">
         <div class="admin-sidebar__secure"><span class="admin-sidebar__secure-dot"></span><span><strong>Protected workspace</strong><small>Secure admin session</small></span></div>
         <a href="/" target="_blank" rel="noopener">View website ↗</a>
+        <button class="sidebar-utility" type="button" data-clear-cache>Refresh app files</button>
         <button class="sidebar-logout" type="button" data-logout>Sign out</button>
       </div>
     </aside>
@@ -222,7 +226,7 @@
                 <div class="field field--full"><label>Homepage banner image 3</label><input name="banner_image_3" type="url" placeholder="Cloudinary image URL"></div>
                 <div class="field field--full"><label>Homepage banner image 4</label><input name="banner_image_4" type="url" placeholder="Cloudinary image URL"></div>
                 <div class="field field--full"><label>Homepage banner image 5</label><input name="banner_image_5" type="url" placeholder="Cloudinary image URL"></div>
-                                  </div>
+                  </div>
                 </fieldset>
 
                 <fieldset class="content-settings-card">
@@ -288,35 +292,42 @@
   </nav>
 
   <div class="access-gate" data-access-screen>
-    <div class="access-card">
-      <img class="admin-login-logo" src="/assets/media/brand/original-logo.webp" alt="HUSBA Beads">
-      <span class="admin-login-label">Private workspace</span>
+    <div class="access-shell">
+      <aside class="access-visual" aria-hidden="true">
+        <span class="access-visual__kicker">HUSBA Beads</span>
+        <h2 class="access-visual__title">Handmade,<br>held with care.</h2>
+        <p class="access-visual__copy">Every product, film and word on the website starts here. Sign in to keep it looking as considered as the pieces themselves.</p>
+      </aside>
+      <div class="access-card">
+        <img class="admin-login-logo" src="/assets/media/brand/original-logo.webp" alt="HUSBA Beads">
+        <span class="admin-login-label">Private workspace</span>
 
-      <div data-login-panel>
-        <h2>Admin sign in</h2>
-        <p data-access-message>Sign in to manage your HUSBA website.</p>
+        <div data-login-panel>
+          <h2>Admin sign in</h2>
+          <p data-access-message>Sign in to manage your HUSBA website.</p>
 
-        <form class="admin-login-form" data-login-form>
-          <div class="field">
-            <label for="admin-email">Email</label>
-            <input id="admin-email" name="email" type="email" autocomplete="username" required>
-          </div>
+          <form class="admin-login-form" data-login-form>
+            <div class="field">
+              <label for="admin-email">Email</label>
+              <input id="admin-email" name="email" type="email" autocomplete="username" required>
+            </div>
 
-          <div class="field">
-            <label for="admin-password">Password</label>
-            <input id="admin-password" name="password" type="password" autocomplete="current-password" minlength="12" required>
-          </div>
+            <div class="field">
+              <label for="admin-password">Password</label>
+              <input id="admin-password" name="password" type="password" autocomplete="current-password" minlength="12" required>
+            </div>
 
-          <button class="button" type="submit" data-login-submit>Sign in</button>
-          <p class="form-status is-error" data-login-status role="status"></p>
-        </form>
-      </div>
+            <button class="button" type="submit" data-login-submit>Sign in</button>
+            <p class="form-status is-error" data-login-status role="status"></p>
+          </form>
+        </div>
 
-      <div data-loading-panel hidden>
-        <span class="admin-loading-orbit" aria-hidden="true"></span>
-        <span class="admin-loading-kicker">HUSBA ADMIN</span>
-        <h2>Preparing your workspace</h2>
-        <p>Connecting securely and loading your website controls…</p>
+        <div data-loading-panel hidden>
+          <span class="admin-loading-orbit" aria-hidden="true"></span>
+          <span class="admin-loading-kicker">HUSBA ADMIN</span>
+          <h2>Preparing your workspace</h2>
+          <p>Connecting securely and loading your website controls…</p>
+        </div>
       </div>
     </div>
   </div>

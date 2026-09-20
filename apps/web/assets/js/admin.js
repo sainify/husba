@@ -516,7 +516,19 @@ const openForm = (type, item = null) => {
       field("Show video", "is_active", item ? data.is_active : true, { type: "checkbox" })
     ].join("");
   } else if (type === "enquiry") {
-    fields.innerHTML = [
+    const summary = item ? `<div class="enquiry-detail">
+      <dl>
+        <dt>Reference</dt><dd>${escapeHtml(data.reference || "")}</dd>
+        <dt>Customer</dt><dd>${escapeHtml(data.name || "")}</dd>
+        <dt>Phone</dt><dd>${escapeHtml(data.phone || "")}</dd>
+        <dt>City</dt><dd>${escapeHtml(data.city || "—")}</dd>
+        <dt>Requirement</dt><dd>${escapeHtml(data.product_name || statusText(data.enquiry_type) || "—")}</dd>
+        <dt>Quantity</dt><dd>${Number(data.quantity || 1)}</dd>
+        <dt>Received</dt><dd>${formatDate(data.created_at)}</dd>
+      </dl>
+      ${data.message ? `<p>${escapeHtml(data.message)}</p>` : ""}
+    </div>` : "";
+    fields.innerHTML = summary + [
       field("Status", "status", data.status || "new", {
         type: "select",
         choices: [
@@ -527,6 +539,29 @@ const openForm = (type, item = null) => {
       }),
       field("Admin notes", "admin_notes", data.admin_notes, { type: "textarea", full: true })
     ].join("");
+  }
+
+  if (type === "product") {
+    fields.querySelectorAll('input[name^="image_url_"]').forEach((input) => {
+      const preview = document.createElement("img");
+      preview.className = "field-image-preview";
+      preview.alt = "";
+      preview.loading = "lazy";
+      const sync = () => {
+        const url = input.value.trim();
+        if (url) {
+          preview.src = url;
+          preview.classList.add("is-visible");
+        } else {
+          preview.classList.remove("is-visible");
+          preview.removeAttribute("src");
+        }
+      };
+      preview.addEventListener("error", () => preview.classList.remove("is-visible"));
+      input.insertAdjacentElement("afterend", preview);
+      input.addEventListener("input", sync);
+      sync();
+    });
   }
 
   history.pushState({ adminView: currentView, dialog: "resource" }, "", `#${currentView}`);
@@ -1084,7 +1119,7 @@ document
   .querySelector("[data-refresh]")
   .addEventListener("click", load);
 
-document.querySelector("[data-clear-cache]").addEventListener("click", async () => {
+document.querySelector("[data-clear-cache]")?.addEventListener("click", async () => {
   const button = document.querySelector("[data-clear-cache]");
   button.disabled = true;
   try {

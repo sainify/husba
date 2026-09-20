@@ -1,15 +1,15 @@
 {
-  "name": "UZVÉRA Admin",
-  "short_name": "UZVÉRA Admin",
-  "description": "Private mobile workspace for managing UZVÉRA Beads.",
+  "name": "HUSBA Admin",
+  "short_name": "HUSBA Admin",
+  "description": "Private mobile workspace for managing HUSBA Beads.",
   "id": "/admin/",
   "start_url": "/admin/",
   "scope": "/admin/",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait-primary",
-  "background_color": "#f8f3ef",
-  "theme_color": "#201917",
+  "background_color": "#F8F5F1",
+  "theme_color": "#171515",
   "shortcuts": [
     { "name": "Products", "short_name": "Products", "url": "/admin/#products", "icons": [{ "src": "/admin/icons/admin-192.png", "sizes": "192x192" }] },
     { "name": "Enquiries", "short_name": "Enquiries", "url": "/admin/#enquiries", "icons": [{ "src": "/admin/icons/admin-192.png", "sizes": "192x192" }] }
