@@ -1,3 +1,4 @@
+import fs from "node:fs/promises";
 import { cp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -64,5 +65,8 @@ if (siteUrl) {
 } else {
   await writeFile(path.join(output, "robots.txt"), "User-agent: *\nAllow: /\nDisallow: /admin/\n");
 }
+
+// remove generated _redirects to prevent Cloudflare Workers redirect validation loops
+await fs.rm(path.join(output, "_redirects"), { force: true });
 
 console.log(`Built HUSBA Beads frontend at ${output}`);
