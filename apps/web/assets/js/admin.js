@@ -984,24 +984,26 @@ const showLogin = (
 
 };
 
+let loadInFlight = false;
 const load = async () => {
+  if (loadInFlight) return;
+  loadInFlight = true;
+  const refreshButton = document.querySelector("[data-refresh]");
+  refreshButton.disabled = true;
+  refreshButton.textContent = "Refreshing…";
   document.body.classList.add("is-loading");
   if (!hasLoaded) {
     accessScreen.hidden = false;
     loginPanel.hidden = true;
     loadingPanel.hidden = false;
-  } else {
-    document.querySelector("[data-stats]").innerHTML = Array.from({ length: 4 }, () => '<div class="stat-card skeleton-card"><i></i><b></b></div>').join("");
-    document.querySelector("[data-recent-enquiries]").innerHTML = Array.from({ length: 3 }, () => '<div class="skeleton-row"><i></i><span></span></div>').join("");
   }
 
   const accessMessage = document.querySelector("[data-access-message]");
   if (accessMessage) accessMessage.textContent = "Checking your secure admin session…";
 
   try {
-    await api.admin("/session");
-
     const [
+      session,
       dashboard,
       products,
       categories,
@@ -1009,6 +1011,7 @@ const load = async () => {
       enquiries,
       settings
     ] = await Promise.all([
+      api.admin("/session"),
       api.admin("/dashboard"),
       api.admin("/products?include_inactive=1"),
       api.admin("/categories?include_inactive=1"),
@@ -1049,6 +1052,9 @@ const load = async () => {
       "Not connected";
   } finally {
     document.body.classList.remove("is-loading");
+    loadInFlight = false;
+    refreshButton.disabled = false;
+    refreshButton.textContent = "Refresh";
   }
 };
 

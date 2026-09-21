@@ -21,7 +21,7 @@ await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
 await cp(source, output, { recursive: true });
 
-const assetVersion = "20260921-01";
+const assetVersion = "20260921-02";
 const outputEntries = await readdir(output, { recursive: true });
 for (const entry of outputEntries.filter((name) => name.endsWith(".html"))) {
   const htmlPath = path.join(output, entry);
