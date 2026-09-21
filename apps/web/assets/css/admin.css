@@ -45,6 +45,9 @@
 .admin-body,
 .admin-body * { box-sizing: border-box; }
 
+/* Shared button display rules must never reveal hidden PWA controls. */
+.admin-body [hidden] { display: none !important; }
+
 .admin-body ::selection { background: var(--adm-rose); color: var(--adm-burgundy-deep); }
 
 .admin-body :focus-visible {
@@ -260,7 +263,18 @@
 /* Main / topbar                                                          */
 /* ---------------------------------------------------------------------- */
 
-.admin-main { min-width: 0; }
+.admin-main { min-width: 0; width: 100%; }
+.admin-content, .admin-view, .admin-panel, .content-settings-stack,
+.content-settings-card, .form-grid > *, .admin-grid > * { min-width: 0; }
+.content-settings-card { margin: 0; }
+.admin-app-title { display: flex; align-items: center; gap: 0.65rem; min-width: 0; }
+.admin-app-title > div { min-width: 0; }
+.admin-app-title small { display: block; color: var(--adm-ink-soft); font-size: 0.7rem; }
+.admin-app-mark {
+  display: grid; place-items: center; flex: 0 0 2.2rem; height: 2.2rem;
+  border: 1px solid var(--adm-line); border-radius: 0.65rem;
+  font-family: var(--adm-serif); font-size: 1rem;
+}
 
 .admin-topbar {
   position: sticky;
@@ -278,7 +292,8 @@
   backdrop-filter: blur(18px) saturate(1.4);
   -webkit-backdrop-filter: blur(18px) saturate(1.4);
 }
-.admin-topbar__actions { display: flex; align-items: center; gap: 0.55rem; }
+.admin-topbar__actions { display: flex; align-items: center; gap: 0.55rem; min-width: 0; flex-wrap: wrap; }
+.admin-topbar__actions .icon-button { flex-shrink: 0; }
 .admin-topbar__title { margin: 0; color: var(--adm-ink); font-family: var(--adm-sans); font-weight: 680; font-size: 1.02rem; letter-spacing: -0.005em; }
 
 .icon-button {
@@ -1086,6 +1101,34 @@ body.is-loading .admin-content { opacity: 0.7; pointer-events: none; transition:
 
 @media (max-width: 860px) {
   .admin-shell { display: block; }
+
+  .admin-topbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+    padding: calc(0.65rem + var(--adm-safe-t)) 1rem 0.65rem;
+  }
+  .admin-topbar__actions { width: 100%; }
+  .admin-topbar__actions:first-child { flex-wrap: nowrap; }
+  .admin-topbar__actions:last-child { gap: 0.4rem; }
+  .admin-topbar__actions .button--small {
+    min-height: 2.5rem; padding: 0.4rem 0.65rem;
+    font-size: 0.7rem; letter-spacing: 0.02em; white-space: nowrap;
+  }
+  .connection-badge { margin-right: auto; padding: 0.4rem 0.55rem; font-size: 0.65rem; }
+  .connection-badge::before { flex-shrink: 0; }
+  .admin-topbar__title { overflow-wrap: anywhere; line-height: 1.25; }
+  .admin-content { width: 100%; padding: 1.2rem 1rem calc(7rem + var(--adm-safe-b)); }
+  .admin-panel__head { flex-wrap: wrap; padding: 1rem; }
+  .admin-panel__body, .admin-panel > .admin-panel__body:only-child { padding: 1rem; }
+  .content-settings-card { padding: 0.85rem 0.75rem 1rem; }
+  .content-settings-card legend { max-width: 100%; }
+  .field input, .field select, .field textarea, .announcement-admin__grid textarea {
+    min-width: 0; width: 100%; max-width: 100%; font-size: 1rem;
+  }
+  .admin-bottom-nav button { min-width: 0; }
+  .admin-bottom-nav small { overflow-wrap: anywhere; }
+  .toast-region { bottom: calc(6.5rem + var(--adm-safe-b)); }
 
   .admin-sidebar {
     position: fixed;
