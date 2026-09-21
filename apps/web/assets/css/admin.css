@@ -1292,29 +1292,6 @@ body.is-loading .admin-content { opacity: 0.7; pointer-events: none; transition:
 /* Dark mode — luxury dark theme (opt-in via OS preference)               */
 /* ---------------------------------------------------------------------- */
 
-@media (prefers-color-scheme: dark) {
-  .admin-body {
-    --adm-ivory: #17140F;
-    --adm-white: #1E1A16;
-    --adm-ink: #F3EDE8;
-    --adm-ink-soft: #A69A93;
-    --adm-line: rgba(243, 237, 232, 0.12);
-    --adm-line-soft: rgba(243, 237, 232, 0.07);
-    --adm-taupe: #4A3F38;
-    --adm-rose: #E7B9C1;
-    background: var(--adm-ivory);
-  }
-  .admin-sidebar { background: radial-gradient(120% 140% at 0% 0%, rgba(123, 70, 85, 0.4), transparent 55%), #100D0A; }
-  .admin-topbar { background: rgba(23, 20, 15, 0.86); }
-  .stat-card, .admin-panel, .content-settings-card, .access-card, .admin-dialog { background: var(--adm-white); }
-  .search-field input, .select-clean, .field input, .field select, .field textarea { background: #14110D; }
-  .search-field input:focus, .select-clean:focus, .field input:focus, .field select:focus, .field textarea:focus { background: var(--adm-white); }
-  .access-gate { background: var(--adm-ivory); }
-  .offline-screen { background: var(--adm-ivory); }
-  .dialog-actions { background: #14110D; }
-  .admin-bottom-nav { background: rgba(16, 13, 10, 0.94); }
-}
-
 /* Light, grouped workspace navigation. */
 .admin-body { --adm-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
 .admin-sidebar {
@@ -1377,3 +1354,70 @@ body.is-loading .admin-content { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
   .admin-sidebar, .admin-sidebar .admin-nav button { transition: none; }
 }
+
+/* One light visual language across the entire admin workspace. */
+.admin-body {
+  color-scheme: light;
+  --adm-ivory: #f5f5f7;
+  --adm-ink: #242429;
+  --adm-ink-soft: #777780;
+  --adm-burgundy: #85576a;
+  --adm-burgundy-deep: #704557;
+  --adm-rose: #eee3e8;
+  --adm-taupe: #dedbe1;
+  --adm-line: #e5e5ea;
+  --adm-line-soft: #ededf0;
+  --adm-serif: var(--adm-sans);
+  --adm-shadow-sm: 0 2px 5px rgba(35,30,45,.025);
+  --adm-shadow-md: 0 8px 28px rgba(35,30,45,.055);
+  --adm-shadow-lg: 0 18px 50px rgba(35,30,45,.12);
+}
+.admin-body h1, .admin-body h2, .admin-body h3 { font-family: var(--adm-sans); letter-spacing: -.035em; }
+.admin-heading h1 { font-weight: 750; font-size: clamp(1.7rem, 4vw, 2.35rem); line-height: 1.15; }
+.admin-heading p { font-size: .94rem; line-height: 1.6; max-width: 40rem; }
+.admin-eyebrow { font-size: .62rem; letter-spacing: .12em; color: #85576a; }
+.admin-topbar { background: rgba(245,245,247,.94); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-bottom: 1px solid var(--adm-line); }
+.admin-app-mark { background: #ede2e6; color: #824f60; border: 0; border-radius: .85rem; font-family: var(--adm-sans); font-size: .85rem; font-weight: 700; }
+.admin-topbar .icon-button { background: #fff; border: 1px solid var(--adm-line); border-radius: .85rem; box-shadow: var(--adm-shadow-sm); }
+.admin-body .button { border-radius: .85rem; text-transform: none; letter-spacing: 0; font-weight: 650; }
+.admin-body .button--ghost { background: #fff; border-color: var(--adm-line); color: #754554; }
+.stat-card, .admin-panel, .content-settings-card { border: 1px solid var(--adm-line); border-radius: 1.2rem; box-shadow: var(--adm-shadow-sm); }
+.stat-card { background: #fff; }
+.stat-card strong { font-family: var(--adm-sans); font-weight: 720; letter-spacing: -.055em; font-variant-numeric: tabular-nums; }
+.stat-card > span { font-size: .68rem; font-weight: 650; letter-spacing: .025em; }
+.admin-panel__head h2 { font-size: 1.1rem; font-weight: 700; }
+.admin-empty strong { font-family: var(--adm-sans); font-size: 1.15rem; font-weight: 650; letter-spacing: -.02em; }
+.admin-panel .admin-nav button { color: #754554; background: #f5f5f7; border: 1px solid var(--adm-line); }
+.admin-panel .admin-nav button:hover { background: #eee3e8; }
+.table-action { border-radius: .75rem; }
+.admin-sidebar { background: var(--adm-ivory); }
+.admin-sidebar .wordmark__monogram { font-family: var(--adm-sans); font-size: .9rem; font-weight: 700; }
+@media (max-width: 860px) {
+  .admin-content { padding-top: 1.4rem; }
+  .admin-dashboard-heading { margin-bottom: 1.5rem; }
+  .admin-bottom-nav { background: rgba(255,255,255,.94); border: 1px solid #e5e5ea; box-shadow: 0 8px 36px rgba(35,30,45,.12); }
+  .admin-bottom-nav button { color: #777780; }
+  .admin-bottom-nav button.is-active { color: #754554; background: #eee3e8; }
+  .admin-bottom-nav button.is-active::after { background: #85576a; width: 4px; height: 4px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .admin-body button, .admin-body .button { transition: transform 180ms var(--adm-ease), background 220ms ease, color 220ms ease, box-shadow 220ms ease; }
+  .admin-body button:active, .admin-body .button:active { transform: scale(.97); }
+  .admin-view:not([hidden]) { animation: adm-view-in 380ms var(--adm-ease) both; }
+  .stat-card { animation: adm-card-arrive 480ms var(--adm-ease) backwards; }
+  .stat-card:nth-child(2) { animation-delay: 45ms; }
+  .stat-card:nth-child(3) { animation-delay: 90ms; }
+  .stat-card:nth-child(4) { animation-delay: 135ms; }
+  .admin-sidebar.is-open .admin-nav button { animation: adm-menu-arrive 360ms var(--adm-ease) backwards; }
+  .admin-sidebar.is-open .admin-nav button:nth-of-type(2) { animation-delay: 35ms; }
+  .admin-sidebar.is-open .admin-nav button:nth-of-type(3) { animation-delay: 70ms; }
+  .admin-sidebar.is-open .admin-nav button:nth-of-type(4) { animation-delay: 105ms; }
+  .admin-sidebar.is-open .admin-nav button:nth-of-type(5) { animation-delay: 140ms; }
+  .admin-sidebar.is-open .admin-nav button:nth-of-type(6) { animation-delay: 175ms; }
+  @media (hover: hover) {
+    .stat-card:hover { transform: translateY(-3px); box-shadow: var(--adm-shadow-md); }
+    .stat-card { transition: transform 250ms var(--adm-ease), box-shadow 250ms ease; }
+  }
+}
+@keyframes adm-card-arrive { from { opacity: 0; transform: translateY(12px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes adm-menu-arrive { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }

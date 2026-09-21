@@ -1,4 +1,4 @@
-const CACHE = "husba-admin-v14";
+const CACHE = "husba-admin-v15";
 const SHELL = [
   "/admin/", "/admin/manifest.webmanifest",
   "/admin/icons/admin-192.png", "/admin/icons/admin-512.png",
