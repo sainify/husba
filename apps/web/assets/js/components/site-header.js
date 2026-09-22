@@ -36,6 +36,7 @@ class SiteHeader extends HTMLElement {
         </div>
       </header>
       <nav class="hb-mobile-menu" id="hb-mobile-menu" aria-label="Mobile" data-open="false" inert>
+        <p class="hb-menu-eyebrow">The world of HUSBA</p>
         ${navHtml()}
         <div class="hb-mobile-menu__foot">
           <a class="hb-btn hb-btn--whatsapp" data-whatsapp="919326840719" href="#">WhatsApp us</a>

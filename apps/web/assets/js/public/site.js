@@ -43,7 +43,8 @@ export function initHero() {
   stopHero=()=>{clearInterval(timer);io.disconnect();};show(0);
 }
 function initHeader(){
-  const header=document.querySelector('.hb-header'), menu=document.querySelector('.hb-mobile-menu'),btn=document.querySelector('.hb-menu-btn');if(!header||!menu||!btn)return;
+  const header=document.querySelector('.hb-header'), menu=document.querySelector('.hb-mobile-menu'),btn=document.querySelector('.hb-menu-btn');if(!header||!menu||!btn||btn.dataset.menuBound==='true')return;
+  btn.dataset.menuBound='true';
   const setOpen=open=>{
     header.dataset.menuOpen=String(open);menu.dataset.open=String(open);menu.inert=!open;
     const top=header.getBoundingClientRect().bottom;menu.style.top=`${top}px`;menu.style.height=`calc(100dvh - ${top}px)`;
@@ -77,5 +78,5 @@ async function settings(){
   document.querySelectorAll('a[href*="instagram.com"]').forEach(a=>{a.hidden=!s.instagram_url;if(s.instagram_url)a.href=safeLink(s.instagram_url,'https://www.instagram.com/husba.beads/');});
  }catch{ /* Keep real static content and honest product error states. */ }
 }
-function init(){initHeader();refreshMedia();updateWhatsApp();settings();document.addEventListener('visibilitychange',()=>{if(document.hidden)document.querySelectorAll('video').forEach(v=>v.pause());});}
+function init(){if(document.body.dataset.husbaInitialized==='true')return;document.body.dataset.husbaInitialized='true';initHeader();refreshMedia();updateWhatsApp();settings();document.addEventListener('visibilitychange',()=>{if(document.hidden)document.querySelectorAll('video').forEach(v=>v.pause());});}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();

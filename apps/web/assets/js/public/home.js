@@ -14,7 +14,7 @@ function applySettings(s){
  const media=hero.querySelector('.hb-hero__media');
  // Respect existing admin video/banner choice within the same supplied layout.
  if(s.hero_media_type==='video' && safeMedia(s.hero_video_url,'')){
-  media.innerHTML=`<video data-lazy data-src="${e(safeMedia(s.hero_video_url,''))}" poster="${e(safeMedia(s.hero_video_poster_url))}" playsinline muted loop preload="none" controls aria-label="HUSBA collection film"></video>`;
+  media.innerHTML=`<video data-lazy data-src="${e(safeMedia(s.hero_video_url,''))}" poster="${e(safeMedia(s.hero_video_poster_url))}" playsinline muted loop preload="none" aria-label="HUSBA collection film"></video>`;
  }else{
   media.innerHTML=slides.map((url,i)=>`<img data-banner-image class="${i===0?'is-active':''}" src="${e(url)}" alt="${e(s.hero_image_alt || 'HUSBA handmade jewellery')}" ${i===0?'fetchpriority="high"':'loading="lazy"'}>`).join('');initHero();
  }
@@ -29,5 +29,5 @@ async function init(){
  }catch{grid.innerHTML='<p class="hb-error">Products are temporarily unavailable. Please refresh or <a href="/contact/">contact us</a>.</p>';cats.innerHTML='<p class="hb-empty">Please try the collections again shortly.</p>';}
  refreshMedia();
 }
-async function videos(){try{const data=await getVideos();reels.innerHTML=data.length?data.slice(0,4).map(reelHtml).join(''):'<p class="hb-empty">New films are coming soon.</p>';}catch{reels.innerHTML='<p class="hb-error">Films are temporarily unavailable.</p>';}refreshMedia();}
+async function videos(){try{const data=await getVideos();reels.innerHTML=data.length?data.slice(0,4).map((v,i)=>reelHtml(v,i,{controls:false})).join(''):'<p class="hb-empty">New films are coming soon.</p>';}catch{reels.innerHTML='<p class="hb-error">Films are temporarily unavailable.</p>';}refreshMedia();}
 init();videos();
