@@ -46,8 +46,9 @@ const initGallery = (product) => {
     if (!button) return;
     const index = Number(button.dataset.mediaIndex);
     const item = product.media[index];
+    main.querySelector("video")?.pause();
     main.innerHTML = renderMedia(item, product, true);
-    document.querySelectorAll("[data-media-index]").forEach((thumb) => thumb.classList.toggle("is-active", thumb === button));
+    document.querySelectorAll("[data-media-index]").forEach((thumb) => (thumb.classList.toggle("is-active", thumb === button), thumb.setAttribute("aria-pressed", String(thumb === button))));
   });
 };
 
@@ -59,9 +60,9 @@ const renderProduct = (product) => {
   shell.setAttribute("itemtype", "https://schema.org/Product");
   shell.innerHTML = `
     <div class="product-gallery">
-      <div class="product-thumbs" data-thumbs>${media.map((item, index) => `<button class="product-thumb${index === 0 ? " is-active" : ""}" type="button" data-media-index="${index}" aria-label="Show media ${index + 1}">${item.media_type === "video" ? `<img src="${escapeHtml(safeMediaUrl(item.poster_url, product.primary_image_url))}" alt="">` : `<img src="${escapeHtml(safeMediaUrl(item.url))}" alt="">`}</button>`).join("")}</div>
+      <div class="product-thumbs" data-thumbs>${media.map((item, index) => `<button class="product-thumb${index === 0 ? " is-active" : ""}" type="button" data-media-index="${index}" aria-pressed="${index === 0}" aria-label="Show media ${index + 1}">${item.media_type === "video" ? `<img loading="lazy" src="${escapeHtml(cloudinaryImageUrl(item.poster_url || product.primary_image_url, 160))}" alt="">` : `<img loading="lazy" src="${escapeHtml(cloudinaryImageUrl(item.url, 160))}" alt="">`}</button>`).join("")}</div>
       <div class="product-main-media" data-main-media>${renderMedia(media[0], product, true)}</div>
-      <div class="product-mobile-gallery">${media.map((item, index) => `<div class="product-mobile-media">${renderMedia(item, product, index === 0)}</div>`).join("")}</div>
+
     </div>
     <div class="product-info">
       <meta itemprop="brand" content="HUSBA Beads">
@@ -88,11 +89,13 @@ const renderProduct = (product) => {
     </div>`;
   document.querySelector("[data-product-enquiry]").addEventListener("click", () => openEnquiry({ product }));
   document.querySelector("[data-share-product]").addEventListener("click", async () => {
+    try {
     if (navigator.share) await navigator.share({ title: `${product.name} · HUSBA Beads`, text: product.description, url: location.href });
     else {
       await navigator.clipboard.writeText(location.href);
       document.querySelector("[data-share-product]").textContent = "Link copied";
     }
+    } catch (error) { if (error.name !== "AbortError") document.querySelector("[data-share-product]").textContent = "Copy link from address bar"; }
   });
   initGallery({ ...product, media });
 };

@@ -125,7 +125,7 @@ class SiteHeader extends HTMLElement {
           </div>
         </div>
       </header>
-      <nav class="mobile-nav" aria-label="Mobile navigation" data-mobile-nav>
+      <nav class="mobile-nav" aria-label="Mobile navigation" data-mobile-nav inert>
         <div class="mobile-nav__inner">
           <div class="mobile-nav__eyebrow"><span>HUSBA Beads</span><span>Navigation</span></div>
           <div class="mobile-nav__links">
@@ -136,7 +136,7 @@ class SiteHeader extends HTMLElement {
             ${navLink("/contact/", "Contact")}
           </div>
           <div class="mobile-nav__footer">
-            <div class="mobile-nav__social"><span>Follow us</span><a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a><a href="https://wa.me/919326840719" target="_blank" rel="noopener">WhatsApp</a></div>
+            <div class="mobile-nav__social"><span>Follow us</span><a data-instagram-link hidden href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a><a data-whatsapp-link href="https://wa.me/919326840719" target="_blank" rel="noopener">WhatsApp</a></div>
             <button class="mobile-nav__cta" type="button" data-open-enquiry>Start an enquiry <span aria-hidden="true">↗</span></button>
           </div>
         </div>
@@ -256,7 +256,9 @@ document.addEventListener("click", (event) => {
 export const setSiteSettings = (settings = {}) => {
   state.settings = { ...state.settings, ...settings };
   document.querySelectorAll("[data-instagram-link]").forEach((link) => {
-    if (state.settings.instagram_url) link.href = state.settings.instagram_url;
+    const value = String(state.settings.instagram_url || "");
+    link.hidden = !/^https:\/\//i.test(value);
+    if (!link.hidden) link.href = value;
   });
   const announcement = document.querySelector("[data-announcement]");
   if (announcement) {
@@ -302,6 +304,7 @@ export const setSiteSettings = (settings = {}) => {
 
   const whatsapp = document.querySelector("[data-floating-whatsapp]");
   const number = normalisePhone(state.settings.whatsapp_number) || "919004931823";
+  document.querySelectorAll("[data-whatsapp-link]").forEach(link => { link.href = `https://wa.me/${number}`; });
   if (whatsapp) {
     whatsapp.hidden = false;
     whatsapp.href = `https://wa.me/${number}`;
@@ -324,6 +327,7 @@ export const openEnquiry = ({ product = null, type = "product" } = {}) => {
   form.querySelector("[data-product-field]").hidden = !selectedProduct;
   form.querySelector("[data-form-status]").textContent = "";
   form.querySelector("[data-whatsapp-after]").hidden = true;
+  document.querySelector("[data-menu-button][aria-expanded=true]")?.click();
   dialog.showModal();
   document.body.classList.add("dialog-open");
   requestAnimationFrame(() => form.elements.name.focus());
@@ -348,6 +352,8 @@ document.addEventListener("click", (event) => {
   }
   if (event.target.closest("[data-close-dialog]")) closeDialog();
 });
+
+dialog.addEventListener("close", () => document.body.classList.remove("dialog-open"));
 
 dialog.addEventListener("click", (event) => {
   if (event.target === dialog) closeDialog();
@@ -431,11 +437,11 @@ export const renderProductCard = (product) => {
   const media = product.media?.find((item) => item.media_type === "image") || product.media?.[0] || {};
   const image = safeMediaUrl(media.url || product.primary_image_url);
   const srcset = cloudinarySrcset(image, [360, 640, 960]);
-  const badge = product.is_new ? "New piece" : product.status === "made_to_order" ? "Made to order" : product.is_featured ? "Featured" : "";
+  const badge = product.status === "sold_out" ? "Currently unavailable" : product.is_new ? "New piece" : product.status === "made_to_order" ? "Made to order" : product.is_featured ? "Featured" : "";
   return `<article class="product-card">
     <a class="product-card__media" href="/product/?slug=${encodeURIComponent(product.slug)}" aria-label="View ${escapeHtml(product.name)}">
       ${badge ? `<span class="product-card__badge">${escapeHtml(badge)}</span>` : ""}
-      <img src="${escapeHtml(cloudinaryImageUrl(image, 720))}"${srcset ? ` srcset="${escapeHtml(srcset)}" sizes="(max-width: 36rem) 100vw, (max-width: 52rem) 50vw, 33vw"` : ""} alt="${escapeHtml(media.alt_text || product.name)}" width="800" height="1000" loading="lazy" decoding="async">
+      <img src="${escapeHtml(cloudinaryImageUrl(image, 720))}"${srcset ? ` srcset="${escapeHtml(srcset)}" sizes="(max-width: 760px) 46vw, 30vw"` : ""} alt="${escapeHtml(media.alt_text || product.name)}" width="800" height="1000" loading="lazy" decoding="async">
       <span class="product-card__quick"><span class="button button--light button--small">View piece <span aria-hidden="true">↗</span></span></span>
     </a>
     <div class="product-card__body">
@@ -471,13 +477,26 @@ const initNavigation = () => {
   if (button && navigation) {
     const setMenuState = (open) => {
       navigation.classList.toggle("is-open", open);
+      navigation.inert = !open;
+      navigation.style.top = `${document.querySelector("site-header").getBoundingClientRect().bottom}px`;
+      navigation.style.height = `calc(100dvh - ${document.querySelector("site-header").getBoundingClientRect().bottom}px)`;
+      document.querySelector("main")?.toggleAttribute("inert", open);
+      document.querySelector("site-footer")?.toggleAttribute("inert", open);
+      if (!open) button.focus();
       button.setAttribute("aria-expanded", String(open));
       button.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
       document.body.classList.toggle("menu-open", open);
     };
     button.addEventListener("click", () => setMenuState(!navigation.classList.contains("is-open")));
+    window.addEventListener("resize", () => { if (window.innerWidth > 760 && navigation.classList.contains("is-open")) setMenuState(false); });
     navigation.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setMenuState(false)));
     document.addEventListener("keydown", (event) => {
+      if (event.key === "Tab" && navigation.classList.contains("is-open")) {
+        const links = [button, ...navigation.querySelectorAll('a:not([hidden]), button')];
+        const first = links[0], last = links.at(-1);
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
       if (event.key === "Escape" && navigation.classList.contains("is-open")) setMenuState(false);
     });
   }
@@ -519,6 +538,9 @@ window.addEventListener("pageshow", () => {
   document.body.classList.remove("is-leaving", "menu-open");
   document.body.classList.add("is-ready");
   document.querySelector("[data-mobile-nav]")?.classList.remove("is-open");
+  document.querySelector("[data-mobile-nav]")?.setAttribute("inert", "");
+  document.querySelector("main")?.removeAttribute("inert");
+  document.querySelector("site-footer")?.removeAttribute("inert");
   document.querySelector("[data-menu-button]")?.setAttribute("aria-expanded", "false");
 });
 
@@ -528,6 +550,11 @@ const init = () => {
   initParallax();
   initPageTransitions();
   loadTurnstile();
+  // Static story/policy pages still use the real admin-managed brand settings.
+  if (["/about/", "/privacy/", "/terms/"].includes(location.pathname)) api.getBootstrap().then(data => setSiteSettings(data.settings)).catch(() => {});
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) document.querySelectorAll("video").forEach(video => video.pause());
+  });
   observeReveals();
   requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add("is-ready")));
 };

@@ -13,8 +13,8 @@ let timer;
 
 const renderChips = (categories) => {
   chips.innerHTML = [
-    `<button class="chip${filters.category ? "" : " is-active"}" type="button" data-category="">All</button>`,
-    ...categories.map((category) => `<button class="chip${filters.category === category.slug ? " is-active" : ""}" type="button" data-category="${escapeHtml(category.slug)}">${escapeHtml(category.name)}</button>`),
+    `<button class="chip${filters.category ? "" : " is-active"}" type="button" aria-pressed="${!filters.category}" data-category="">All</button>`,
+    ...categories.map((category) => `<button class="chip${filters.category === category.slug ? " is-active" : ""}" type="button" aria-pressed="${filters.category === category.slug}" data-category="${escapeHtml(category.slug)}">${escapeHtml(category.name)}</button>`),
   ].join("");
 };
 
@@ -55,7 +55,7 @@ chips.addEventListener("click", (event) => {
   const button = event.target.closest("[data-category]");
   if (!button) return;
   filters.category = button.dataset.category;
-  chips.querySelectorAll("[data-category]").forEach((chip) => chip.classList.toggle("is-active", chip === button));
+  chips.querySelectorAll("[data-category]").forEach((chip) => (chip.classList.toggle("is-active", chip === button), chip.setAttribute("aria-pressed", String(chip === button))));
   const url = new URL(location.href);
   filters.category ? url.searchParams.set("category", filters.category) : url.searchParams.delete("category");
   history.replaceState({}, "", url);

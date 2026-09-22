@@ -22,7 +22,7 @@ const renderStory = (story) => {
   const videoUrl = story.video_url ? safeMediaUrl(story.video_url, "") : "";
   return `<article class="video-story" data-video-story>
     <div class="video-story__media">
-      ${videoUrl ? `<video data-src="${escapeHtml(videoUrl)}" poster="${escapeHtml(poster)}" playsinline muted loop preload="auto" controls aria-label="${escapeHtml(story.title)}"></video>` : `<img src="${escapeHtml(poster)}" alt="${escapeHtml(story.poster_alt || story.title)}" width="1080" height="1350">`}
+      ${videoUrl ? `<video data-src="${escapeHtml(videoUrl)}" poster="${escapeHtml(poster)}" playsinline muted loop preload="none" controls aria-label="${escapeHtml(story.title)}"></video>` : `<img src="${escapeHtml(poster)}" alt="${escapeHtml(story.poster_alt || story.title)}" width="1080" height="1350">`}
     </div>
     <div class="video-story__content">
       <div class="video-story__copy">
@@ -55,9 +55,7 @@ const initVideoBehavior = () => {
       if (!video) return;
       if (entry.isIntersecting && entry.intersectionRatio > 0.64) {
         loadVideo(video);
-        const index = stories.indexOf(entry.target);
-        loadVideo(stories[index + 1]?.querySelector("video"));
-        if (!reducedMotion) video.play().catch(() => {});
+        if (!reducedMotion && !navigator.connection?.saveData) video.play().catch(() => {});
       } else {
         video.pause();
       }

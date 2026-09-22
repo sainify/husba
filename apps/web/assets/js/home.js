@@ -9,62 +9,6 @@ const heroVideo = document.querySelector("[data-hero-video]");
 const heroImage = document.querySelector("[data-hero-image]");
 const heroBannerGrid = document.querySelector("[data-hero-banner-grid]");
 
-document.body.insertAdjacentHTML("beforeend", `
-  <dialog class="product-quickview" data-product-quickview>
-    <button class="product-quickview__close" type="button" data-close-quickview aria-label="Close">×</button>
-    <div data-quickview-content></div>
-  </dialog>`);
-
-const quickview = document.querySelector("[data-product-quickview]");
-const quickviewContent = document.querySelector("[data-quickview-content]");
-let quickviewProduct = null;
-
-const quickMedia = (item, product) => item.media_type === "video"
-  ? `<video src="${escapeHtml(safeMediaUrl(item.url, ""))}" poster="${escapeHtml(safeMediaUrl(item.poster_url, product.primary_image_url))}" autoplay muted loop playsinline controls></video>`
-  : `<img src="${escapeHtml(safeMediaUrl(item.url, product.primary_image_url))}" alt="${escapeHtml(item.alt_text || product.name)}" loading="lazy">`;
-
-const showProductQuickview = async (slug) => {
-  quickviewContent.innerHTML = '<div class="quickview-loading">Loading product…</div>';
-  quickview.showModal();
-  document.body.classList.add("dialog-open");
-  try {
-    const { product } = await api.getProduct(slug);
-    quickviewProduct = product;
-    const media = product.media?.length ? [...product.media] : [{ media_type: "image", url: product.primary_image_url }];
-    media.sort((a, b) => (a.media_type === "video" ? -1 : b.media_type === "video" ? 1 : Number(a.sort_order || 0) - Number(b.sort_order || 0)));
-    quickviewContent.innerHTML = `
-      <div class="product-quickview__layout">
-        <div class="product-quickview__media">${media.map((item) => `<div class="product-quickview__slide">${quickMedia(item, product)}</div>`).join("")}</div>
-        <div class="product-quickview__info">
-          <span class="eyebrow">${escapeHtml(product.category_name || "HUSBA collection")}</span>
-          <h2>${escapeHtml(product.name)}</h2>
-          ${product.product_code ? `<p class="product-code">Product code · ${escapeHtml(product.product_code)}</p>` : ""}
-          <p>${escapeHtml(product.description || "A handcrafted piece made with care.")}</p>
-          <div class="product-actions">
-            <a class="button" href="${escapeHtml(productWhatsAppUrl(product))}" target="_blank" rel="noopener">WhatsApp enquiry</a>
-            <button class="button button--ghost" type="button" data-quickview-enquiry>Enquiry form</button>
-          </div>
-        </div>
-      </div>`;
-  } catch (error) {
-    quickviewContent.innerHTML = `<div class="quickview-loading">${escapeHtml(error.message || "Product could not be loaded.")}</div>`;
-  }
-};
-
-const closeQuickview = () => {
-  quickview.querySelector("video")?.pause();
-  quickview.close();
-  document.body.classList.remove("dialog-open");
-};
-
-quickview.addEventListener("click", (event) => {
-  if (event.target === quickview || event.target.closest("[data-close-quickview]")) closeQuickview();
-  if (event.target.closest("[data-quickview-enquiry]")) {
-    closeQuickview();
-    openEnquiry({ product: quickviewProduct });
-  }
-});
-
 const categoryImageMap = (settings = {}) => {
   try {
     const parsed = JSON.parse(String(settings.category_images || "{}"));
@@ -106,9 +50,9 @@ const renderHomeVideos = (videos) => {
   homeVideos.innerHTML = videos.slice(0, 6).map((video) => `
     <article class="home-reel">
       <video
-        src="${escapeHtml(safeMediaUrl(video.video_url, ""))}"
+        data-src="${escapeHtml(safeMediaUrl(video.video_url, ""))}"
         poster="${escapeHtml(safeMediaUrl(video.poster_url))}"
-        autoplay muted loop playsinline controls preload="auto"
+        muted loop playsinline controls preload="none"
         aria-label="${escapeHtml(video.title)}"
       ></video>
       <div class="home-reel__caption">
@@ -122,7 +66,10 @@ const renderHomeVideos = (videos) => {
     entries.forEach((entry) => {
       const video = entry.target.querySelector("video");
       if (!video) return;
-      if (entry.isIntersecting && entry.intersectionRatio >= 0.65) video.play().catch(() => {});
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.65) {
+        if (!video.getAttribute("src")) video.src = video.dataset.src;
+        if (!matchMedia("(prefers-reduced-motion: reduce)").matches && !navigator.connection?.saveData) video.play().catch(() => {});
+      }
       else video.pause();
     });
   }, { threshold: [0.65] });
@@ -130,13 +77,6 @@ const renderHomeVideos = (videos) => {
 };
 
 document.addEventListener("click", (event) => {
-  const productLink = event.target.closest("[data-featured-products] .product-card__media, [data-featured-products] .product-card__title");
-  if (productLink) {
-    event.preventDefault();
-    const slug = new URL(productLink.href, location.origin).searchParams.get("slug");
-    if (slug) showProductQuickview(slug);
-    return;
-  }
   const enquiry = event.target.closest("[data-reel-enquiry]");
   if (enquiry) {
     const reel = enquiry.closest(".home-reel");
@@ -169,33 +109,37 @@ const startBannerSlider = (settings, featuredProducts = []) => {
   const slides = configuredImages.length ? configuredImages : (productImages.length ? productImages : [fallback]);
   clearInterval(bannerTimer);
 
-  if (heroBannerGrid) {
-    heroBannerGrid.innerHTML = slides.slice(0, 4).map((url, index) => `
-      <img class="hero__banner-slide" src="${escapeHtml(url)}" alt="" aria-hidden="true" loading="${index === 0 ? "eager" : "lazy"}">
-    `).join("");
-    heroBannerGrid.hidden = false;
-  }
-
-  if (heroImage) {
-    heroImage.src = slides[0];
-    heroImage.hidden = true;
-  }
-
-  if (slides.length <= 4) return;
+  if (!heroBannerGrid) return;
+  heroBannerGrid.innerHTML = slides.map((url, index) => `<img class="hero__banner-slide${index === 0 ? " is-active" : ""}" src="${escapeHtml(url)}" alt="" loading="${index === 0 ? "eager" : "lazy"}" decoding="async">`).join("");
+  heroBannerGrid.hidden = false;
+  if (heroImage) heroImage.hidden = true;
+  if (slides.length < 2) return;
+  const controls = document.createElement("div");
+  controls.className = "banner-controls";
+  controls.setAttribute("aria-label", "Banner slideshow");
+  controls.innerHTML = slides.map((_, i) => `<button type="button" data-slide="${i}" aria-label="Show banner ${i + 1}" aria-pressed="${i === 0}">${i + 1}</button>`).join("") + '<button type="button" data-pause-banner>Pause</button>';
+  heroBannerGrid.parentElement.append(controls);
   let index = 0;
+  let paused = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const pauseButton = controls.querySelector("[data-pause-banner]");
+  pauseButton.textContent = paused ? "Play" : "Pause";
+  const show = (next) => {
+    index = next;
+    heroBannerGrid.querySelectorAll("img").forEach((image, i) => image.classList.toggle("is-active", i === index));
+    controls.querySelectorAll("[data-slide]").forEach((button, i) => button.setAttribute("aria-pressed", String(i === index)));
+  };
+  controls.addEventListener("click", (event) => {
+    const button = event.target.closest("button");
+    if (!button) return;
+    if (button.hasAttribute("data-slide")) {
+      show(Number(button.dataset.slide));
+      paused = true;
+    } else paused = !paused;
+    pauseButton.textContent = paused ? "Play" : "Pause";
+  });
   bannerTimer = setInterval(() => {
-    index = (index + 1) % slides.length;
-    if (heroBannerGrid) {
-      const target = heroBannerGrid.querySelector(".hero__banner-slide");
-      if (target) {
-        target.classList.add("is-changing");
-        setTimeout(() => {
-          target.src = slides[index];
-          target.classList.remove("is-changing");
-        }, 220);
-      }
-    }
-  }, 4500);
+    if (!paused && !document.hidden && !controls.contains(document.activeElement)) show((index + 1) % slides.length);
+  }, 5500);
 };
 
 const setupHeroMedia = (settings, featuredVideo = null, featuredProducts = []) => {
@@ -221,7 +165,8 @@ const setupHeroMedia = (settings, featuredVideo = null, featuredProducts = []) =
   heroVideo.muted = true;
   heroVideo.hidden = false;
   if (heroImage) heroImage.hidden = true;
-  heroVideo.play().catch(() => {});
+  heroVideo.controls = true;
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches && !navigator.connection?.saveData) heroVideo.play().catch(() => {});
 };
 
 const applySeo = (settings) => {
@@ -252,7 +197,7 @@ const init = async () => {
     if (heroCopy) heroCopy.textContent = String(data.settings?.hero_copy || "Thoughtful beaded jewellery, made by hand for you.").trim();
     const heroCta = document.querySelector("[data-hero-cta]");
     if (heroCta) {
-      heroCta.textContent = String(data.settings?.hero_cta_text || "Shop now").trim();
+      heroCta.textContent = String(data.settings?.hero_cta_text || "Explore collection ↗").trim();
       const target = String(data.settings?.hero_cta_url || "/collections/").trim();
       heroCta.href = target.startsWith("/") || /^https:\/\//i.test(target) ? target : "/collections/";
     }
@@ -274,6 +219,9 @@ const init = async () => {
     setupHeroMedia(data.settings || {}, data.videos?.[0] || null, data.products || []);
     refreshAnimations();
   } catch (error) {
+    if (heroImage) heroImage.hidden = false;
+    categoryGrid.innerHTML = '<p>Explore our pieces in the <a class="text-link" href="/collections/">collection</a>.</p>';
+    if (homeVideos) homeVideos.innerHTML = '<a class="text-link" href="/videos/">Discover the HUSBA Edit ↗</a>';
     productGrid.innerHTML = `<div class="error-state"><div class="error-state__inner"><h2>We could not load the collection.</h2><p>${escapeHtml(error.message)}</p><button class="button button--ghost" type="button" data-reload>Try again</button></div></div>`;
   }
 };
