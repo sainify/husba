@@ -1,23 +1,44 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Product Films · HUSBA Beads</title>
-  <meta name="description" content="See HUSBA Beads product details in short editorial films, then view the piece or send an enquiry.">
-  <meta name="theme-color" content="#faf8f5">
-  <link rel="canonical" href="/videos/">
-  <link rel="icon" href="/assets/media/brand/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/assets/css/storefront.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>The HUSBA Edit · HUSBA Beads</title>
+<meta name="description" content="Watch how HUSBA Beads pieces are made — then enquire on WhatsApp." />
+<link rel="canonical" href="https://husba.pages.dev/videos/" />
+<link rel="stylesheet" href="/assets/css/public.css" />
+<link rel="icon" href="/assets/media/brand/favicon.svg" type="image/svg+xml">
 </head>
-<body class="video-page">
-  <a class="skip-link" href="#main">Skip to films</a>
-  <div class="page-curtain" aria-hidden="true"><span class="page-curtain__mark">UB</span></div>
-  <site-header></site-header>
-  <main id="main"><header class="page-hero"><div class="container page-hero__inner"><div><span class="eyebrow">In motion · The HUSBA Edit</span><h1>A closer <span class="display-italic">look.</span></h1></div><div class="page-hero__copy"><p>The texture. The light. The little details. Discover our handmade pieces in motion.</p></div></div></header><div class="video-stories" data-video-stories aria-live="polite">
-    <section class="video-story"><div class="empty-state__inner"><span class="eyebrow">The HUSBA Edit</span><h1>Loading the details…</h1></div></section>
-  </div></main><site-footer></site-footer>
-  <script src="/config.js"></script>
-  <script type="module" src="/assets/js/videos.js"></script>
+<body data-husba-public>
+<a href="#main" class="hb-skip">Skip to content</a>
+<site-header></site-header>
+<main id="main">
+  <section class="hb-section hb-section--tight">
+    <div class="hb-wrap" data-reveal>
+      <p class="hb-eyebrow">The HUSBA Edit</p>
+      <h1>Watch. Explore. Enquire.</h1>
+      <p class="hb-lede">A closer look at how each piece comes together — tap any film to see the product and ask about it.</p>
+    </div>
+  </section>
+
+  <section class="hb-section hb-section--tight">
+    <div class="hb-wrap">
+      <div class="hb-reels" id="videos-grid" data-reveal-group aria-live="polite">
+        <div class="hb-skeleton" style="aspect-ratio:9/16;"></div>
+        <div class="hb-skeleton" style="aspect-ratio:9/16;"></div>
+        <div class="hb-skeleton" style="aspect-ratio:9/16;"></div>
+        <div class="hb-skeleton" style="aspect-ratio:9/16;"></div>
+        <div class="hb-skeleton" style="aspect-ratio:9/16;"></div>
+        <div class="hb-skeleton" style="aspect-ratio:9/16;"></div>
+      </div>
+    </div>
+  </section>
+</main>
+<site-footer></site-footer>
+<script src="/config.js"></script>
+<script type="module" src="/assets/js/components/site-header.js"></script>
+<script type="module" src="/assets/js/components/site-footer.js"></script>
+<script type="module" src="/assets/js/public/site.js"></script>
+<script type="module" src="/assets/js/public/videos.js"></script>
 </body>
 </html>

@@ -1,122 +1,157 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>HUSBA Beads · Handmade Jewellery & Custom Pieces</title>
-  <meta name="description" content="Discover thoughtfully handcrafted beaded jewellery by HUSBA Beads. Explore the collection and enquire about custom or bulk pieces.">
-  <meta name="theme-color" content="#faf8f5">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="HUSBA Beads">
-  <meta property="og:title" content="HUSBA Beads · Handmade with love">
-  <meta property="og:description" content="Handcrafted beaded pieces, custom designs and bulk enquiries.">
-  <meta property="og:url" content="__SITE_URL__/">
-  <meta property="og:image" content="__SITE_URL__/assets/media/products/pearl-glow-hero.webp">
-  <meta property="og:image:alt" content="Pearl and champagne-gold handmade jewellery on ivory silk">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="canonical" href="/">
-  <link rel="icon" href="/assets/media/brand/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/assets/css/storefront.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>HUSBA Beads · Handmade Jewellery &amp; Custom Pieces</title>
+<meta name="description" content="Discover thoughtfully handcrafted beaded jewellery by HUSBA Beads. Explore the collection and enquire about custom or bulk pieces." />
+<meta name="theme-color" content="#FBF6F2" />
+<link rel="canonical" href="https://husba.pages.dev/" />
+<meta property="og:title" content="HUSBA Beads · Handmade with love" />
+<meta property="og:description" content="Handcrafted beaded pieces, custom designs and bulk enquiries." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://husba.pages.dev/" />
+<link rel="stylesheet" href="/assets/css/public.css" />
+<link rel="icon" href="/assets/media/brand/favicon.svg" type="image/svg+xml">
 </head>
-<body class="home-storefront">
-  <a class="skip-link" href="#main">Skip to content</a>
-  <div class="page-curtain" aria-hidden="true"><span class="page-curtain__mark">UB</span></div>
-  <site-header></site-header>
-  <main id="main">
-    <section class="hero">
-      <div class="hero__inner">
-        <div class="hero__visual" data-parallax data-banner-slider>
-          <div class="hero__banner-grid" data-hero-banner-grid aria-hidden="true" hidden></div>
-          <video class="hero__video" data-hero-video muted loop playsinline preload="metadata" hidden></video>
-          <img class="hero__image" data-hero-image src="/assets/media/products/pearl-glow-hero.webp" alt="Pearl and champagne-gold handmade beaded jewellery arranged on ivory silk" width="1440" height="960" fetchpriority="high">
-          <div class="hero__content">
-            <span class="eyebrow" data-hero-eyebrow>Handcrafted in Mumbai</span>
-            <h1 data-hero-title>Handmade Jewellery</h1>
-            <p class="hero__lead" data-hero-copy>Thoughtful beaded jewellery, made by hand for you.</p>
-            <a class="hero__shop" data-hero-cta href="/collections/">Explore collection ↗</a>
-          </div>
-        </div>
-      </div>
-    </section>
+<body data-husba-public>
+<a href="#main" class="hb-skip">Skip to content</a>
+<site-header></site-header>
 
-    <section class="trust-strip" aria-label="HUSBA qualities">
-      <div class="trust-strip__inner">
-        <div class="trust-item"><strong>Handmade</strong><span>With thoughtful care</span></div>
-        <div class="trust-item"><strong>Customisable</strong><span>Made around your idea</span></div>
-        <div class="trust-item"><strong>Made in Mumbai</strong><span>Created in small batches</span></div>
-      </div>
-    </section>
+<main id="main">
 
-    <section class="section" aria-labelledby="featured-title" data-home-section="products">
-      <div class="container">
-        <div class="section-heading reveal">
-          <div><span class="eyebrow" data-featured-eyebrow>Handpicked for you</span><h2 id="featured-title" data-featured-title>Best Sellers</h2></div>
-          <div class="section-heading__aside"><p data-featured-copy>Discover our latest handcrafted pieces.</p><a class="text-link" href="/collections/">See our collection <span aria-hidden="true">↗</span></a></div>
-        </div>
-        <div class="product-grid stagger" data-featured-products aria-live="polite">
-          <div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>
-        </div>
+  <!-- HERO / BANNER SLIDER — admin-managed banners render here; this ships
+       with the current live hero as slide 1 so the page is never empty. -->
+  <section class="hb-hero" id="hero" data-active="true">
+    <div class="hb-hero__slide">
+      <div class="hb-hero__media">
+        <img src="/assets/media/products/pearl-glow-hero.webp" alt="Pearl and champagne-gold handmade jewellery on ivory silk" loading="eager" />
       </div>
-    </section>
+      <div class="hb-hero__scrim"></div>
+      <div class="hb-hero__copy">
+        <p class="hb-eyebrow">Handcrafted in Mumbai</p>
+        <h1>Handmade Jewellery</h1>
+        <p>Thoughtful beaded jewellery, made by hand for you.</p>
+        <a class="hb-btn hb-btn--primary" href="/collections/">Explore the collection</a>
+      </div>
+    </div>
+    <div class="hb-hero__dots" id="hero-dots" hidden></div>
+  </section>
 
-    <section class="section section--flush-top" data-home-section="videos">
-      <div class="container">
-        <div class="story-panel reveal">
-          <div class="story-panel__content">
-            <span class="eyebrow" data-video-eyebrow>The HUSBA Edit</span>
-            <h2 data-video-title>See what we're making.</h2>
-            <p data-video-copy>Watch • Explore • Enquire</p>
-            <a class="button button--light" href="/videos/">Explore the Edit <span aria-hidden="true">↗</span></a>
-          </div>
-          <div class="home-reels" data-home-videos aria-live="polite">
-            <div class="home-reel-skeleton"></div>
-            <div class="home-reel-skeleton"></div>
-          </div>
-        </div>
-      </div>
-    </section>
+  <!-- Trust strip -->
+  <section class="hb-section hb-section--tight">
+    <div class="hb-wrap" data-reveal-group>
+      <ul class="hb-grid" style="grid-template-columns:repeat(3,1fr);gap:1.5rem;list-style:none;">
+        <li data-reveal><h3 style="font-size:1.05rem;">Handmade</h3><p>With thoughtful care</p></li>
+        <li data-reveal><h3 style="font-size:1.05rem;">Customisable</h3><p>Made around your idea</p></li>
+        <li data-reveal><h3 style="font-size:1.05rem;">Made in Mumbai</h3><p>Created in small batches</p></li>
+      </ul>
+    </div>
+  </section>
 
-    <section class="section" aria-labelledby="categories-title" data-home-section="categories">
-      <div class="container">
-        <div class="section-heading reveal">
-          <div><span class="eyebrow" data-categories-eyebrow>Browse your way</span><h2 id="categories-title" data-categories-title>Find your kind of piece.</h2></div>
-          <div class="section-heading__aside"><p data-categories-copy>From subtle everyday accents to custom occasion pieces, begin with the collection that feels closest to you.</p></div>
+  <!-- Best sellers -->
+  <section class="hb-section" data-section="products">
+    <div class="hb-wrap">
+      <div class="hb-head-row" data-reveal>
+        <div>
+          <p class="hb-eyebrow">Handpicked for you</p>
+          <h2>Best Sellers</h2>
+          <p class="hb-lede">Discover our latest handcrafted pieces.</p>
         </div>
-        <div class="category-grid stagger" data-categories></div>
+        <a class="hb-btn hb-btn--ghost" href="/collections/">See our collection</a>
       </div>
-    </section>
+      <div class="hb-grid" id="featured-grid" data-reveal-group aria-live="polite">
+        <!-- filled by home.js; skeletons shown until then -->
+        <div class="hb-skeleton" style="aspect-ratio:4/5;"></div>
+        <div class="hb-skeleton" style="aspect-ratio:4/5;"></div>
+        <div class="hb-skeleton" style="aspect-ratio:4/5;"></div>
+        <div class="hb-skeleton" style="aspect-ratio:4/5;"></div>
+      </div>
+    </div>
+  </section>
 
-    <section class="section section--flush-top" aria-labelledby="journey-title">
-      <div class="container">
-        <div class="journey-panel reveal">
-          <div class="journey-panel__intro">
-            <span class="eyebrow">Our journey</span>
-            <h2 id="journey-title">Made with heart.<br><span class="display-italic">Shared with you.</span></h2>
-            <p class="journey-panel__meta">Founded in 2026 · Mumbai, India</p>
-          </div>
-          <div class="journey-panel__story">
-            <p>What began as a simple love for beads became something deeply personal. Choosing colours, bringing different beads together and turning small details into beautiful pieces has always been a joyful creative escape.</p>
-            <p>HUSBA Beads was created to share that joy. Every bracelet is handmade with care—from the first colour choice to the final detail—with a special love for pieces that feel personal to the person wearing them.</p>
-            <p>Each creation is a little piece of happiness to wear, gift or keep close. Thank you for supporting this small business; every order, message and kind word means more than you know.</p>
-            <div class="journey-panel__actions">
-              <a class="button" data-whatsapp-link href="https://wa.me/919326840719" target="_blank" rel="noopener">Order on WhatsApp <span aria-hidden="true">↗</span></a>
-              <a class="button button--ghost" href="https://www.instagram.com/husba.beads/" data-instagram-link target="_blank" rel="noopener">Instagram DM <span aria-hidden="true">↗</span></a>
-            </div>
-          </div>
+  <!-- The HUSBA Edit — reels-style video preview -->
+  <section class="hb-section hb-section--sunk" data-section="videos">
+    <div class="hb-wrap">
+      <div class="hb-head-row" data-reveal>
+        <div>
+          <p class="hb-eyebrow">The HUSBA Edit</p>
+          <h2>See what we're making.</h2>
+          <p class="hb-lede">Watch · Explore · Enquire</p>
         </div>
+        <a class="hb-btn hb-btn--ghost" href="/videos/">Explore the Edit</a>
       </div>
-    </section>
+      <div class="hb-reels" id="home-reels" data-reveal-group>
+        <div class="hb-skeleton" style="aspect-ratio:9/16;"></div>
+        <div class="hb-skeleton" style="aspect-ratio:9/16;"></div>
+        <div class="hb-skeleton" style="aspect-ratio:9/16;"></div>
+        <div class="hb-skeleton" style="aspect-ratio:9/16;"></div>
+      </div>
+    </div>
+  </section>
 
-    <section class="section" data-home-section="enquiry">
-      <div class="container">
-        <div class="enquiry-banner reveal">
-          <div class="enquiry-banner__content"><span class="eyebrow" data-enquiry-eyebrow>Made around you</span><h2 data-enquiry-title>Have an idea in mind?</h2><p data-enquiry-copy>Tell us the colours, occasion, quantity or custom details. We will personally respond with the next steps.</p><button class="button button--light" type="button" data-open-enquiry data-enquiry-type="custom">Start your enquiry <span aria-hidden="true">↗</span></button></div>
+  <!-- Category discovery -->
+  <section class="hb-section" data-section="categories">
+    <div class="hb-wrap">
+      <div data-reveal style="margin-bottom:2rem;">
+        <p class="hb-eyebrow">Browse your way</p>
+        <h2>Find your kind of piece.</h2>
+        <p class="hb-lede">From subtle everyday accents to custom occasion pieces, begin with the collection that feels closest to you.</p>
+      </div>
+      <div class="hb-cats" id="home-cats" data-reveal-group>
+        <div class="hb-skeleton" style="width:9rem;aspect-ratio:1;border-radius:50%;"></div>
+        <div class="hb-skeleton" style="width:9rem;aspect-ratio:1;border-radius:50%;"></div>
+        <div class="hb-skeleton" style="width:9rem;aspect-ratio:1;border-radius:50%;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our story -->
+  <section class="hb-section hb-section--sunk">
+    <div class="hb-wrap hb-story" data-reveal>
+      <div class="hb-story__img">
+        <img src="/assets/media/products/pearl-glow-hero.webp" alt="HUSBA Beads handmade jewellery detail" loading="lazy" />
+      </div>
+      <div class="hb-story__copy">
+        <p class="hb-eyebrow">Our journey</p>
+        <h2>Made with heart. Shared with you.</h2>
+        <p style="margin-top:0.5rem;color:var(--ink-faint);font-size:var(--step-1);">Founded in 2026 · Mumbai, India</p>
+        <p style="margin-top:1.25rem;">What began as a simple love for beads became something deeply personal. Choosing colours, bringing different beads together and turning small details into beautiful pieces has always been a joyful creative escape.</p>
+        <p>HUSBA Beads was created to share that joy. Every bracelet is handmade with care — from the first colour choice to the final detail — with a special love for pieces that feel personal to the person wearing them.</p>
+        <p>Each creation is a little piece of happiness to wear, gift or keep close. Thank you for supporting this small business; every order, message and kind word means more than you know.</p>
+        <div class="hb-cta-band__actions" style="margin-top:1.5rem;">
+          <a class="hb-btn hb-btn--whatsapp" data-whatsapp="919326840719" href="#">Order on WhatsApp</a>
+          <a class="hb-btn hb-btn--ghost" href="https://www.instagram.com/husba.beads/" target="_blank" rel="noopener">Instagram DM</a>
         </div>
       </div>
-    </section>
-  </main>
-  <site-footer></site-footer>
-  <script src="/config.js"></script>
-  <script type="module" src="/assets/js/home.js"></script>
+    </div>
+  </section>
+
+  <!-- Custom enquiry CTA -->
+  <section class="hb-section" data-section="enquiry">
+    <div class="hb-wrap" data-reveal>
+      <div class="hb-cta-band">
+        <div>
+          <p class="hb-eyebrow" style="color:rgba(255,255,255,0.75);">Made around you</p>
+          <h2>Have an idea in mind?</h2>
+          <p>Tell us the colours, occasion, quantity or custom details. We will personally respond with the next steps.</p>
+        </div>
+        <div class="hb-cta-band__actions">
+          <a class="hb-btn hb-btn--primary" style="background:#fff;color:var(--rosewood);" href="/contact/">Start your enquiry</a>
+          <a class="hb-btn hb-btn--ghost" data-whatsapp="919326840719" href="#">WhatsApp us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<site-footer></site-footer>
+
+<script src="/config.js"></script>
+<script type="module" src="/assets/js/components/site-header.js"></script>
+<script type="module" src="/assets/js/components/site-footer.js"></script>
+<script type="module" src="/assets/js/public/site.js"></script>
+<script type="module" src="/assets/js/public/home.js"></script>
 </body>
 </html>

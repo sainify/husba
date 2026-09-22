@@ -1,42 +1,69 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Collections · HUSBA Beads</title>
-  <meta name="description" content="Explore handmade beaded jewellery and custom pieces from HUSBA Beads. Select a piece and send a personal enquiry.">
-  <meta name="theme-color" content="#faf8f5">
-  <link rel="canonical" href="/collections/">
-  <link rel="icon" href="/assets/media/brand/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/assets/css/storefront.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Collections · HUSBA Beads</title>
+<meta name="description" content="Browse handmade beaded jewellery by HUSBA Beads — filter by collection and availability, then enquire on WhatsApp." />
+<link rel="canonical" href="https://husba.pages.dev/collections/" />
+<link rel="stylesheet" href="/assets/css/public.css" />
+<link rel="icon" href="/assets/media/brand/favicon.svg" type="image/svg+xml">
 </head>
-<body>
-  <a class="skip-link" href="#main">Skip to content</a>
-  <div class="page-curtain" aria-hidden="true"><span class="page-curtain__mark">UB</span></div>
-  <site-header></site-header>
-  <main id="main">
-    <header class="page-hero page-hero--shop">
-      <div class="container page-hero__inner">
-        <div><span class="eyebrow">Shop HUSBA</span><h1>Our collection</h1></div>
-        <div class="page-hero__copy"><p>Discover handcrafted pieces made for you.</p></div>
+<body data-husba-public>
+<a href="#main" class="hb-skip">Skip to content</a>
+<site-header></site-header>
+<main id="main">
+  <section class="hb-section hb-section--tight">
+    <div class="hb-wrap" data-reveal>
+      <p class="hb-eyebrow">Collections</p>
+      <h1>Every piece, handmade.</h1>
+      <p class="hb-lede">Filter by collection or availability, or search for something specific — everything here can be made or held for you on enquiry.</p>
+    </div>
+  </section>
+
+  <section class="hb-section hb-section--tight">
+    <div class="hb-wrap">
+      <div class="hb-filterbar" data-reveal>
+        <div class="hb-search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="search-input" type="search" placeholder="Search pieces…" aria-label="Search products" />
+        </div>
+        <div class="hb-chip-group" id="category-chips" role="group" aria-label="Filter by collection">
+          <button class="hb-chip" data-category="" aria-pressed="true">All</button>
+        </div>
+        <button class="hb-chip" id="availability-chip" aria-pressed="false">In stock only</button>
       </div>
-    </header>
-    <section class="filters" aria-label="Collection filters">
-      <div class="container filters__inner">
-        <label class="search-field"><span class="honeypot">Search products</span><input type="search" placeholder="Search by name or code" data-search></label>
-        <div class="filter-chips" data-filter-chips><button class="chip is-active" type="button">All</button></div>
-        <label><span class="honeypot">Sort collection</span><select class="select-clean" data-sort><option value="featured">Featured</option><option value="newest">Newest</option><option value="name">Name A–Z</option></select></label>
+
+      <div class="hb-grid" id="products-grid" data-reveal-group aria-live="polite">
+        <div class="hb-skeleton" style="aspect-ratio:4/5;"></div>
+        <div class="hb-skeleton" style="aspect-ratio:4/5;"></div>
+        <div class="hb-skeleton" style="aspect-ratio:4/5;"></div>
+        <div class="hb-skeleton" style="aspect-ratio:4/5;"></div>
+        <div class="hb-skeleton" style="aspect-ratio:4/5;"></div>
+        <div class="hb-skeleton" style="aspect-ratio:4/5;"></div>
       </div>
-    </section>
-    <section class="section section--tight">
-      <div class="container">
-        <div class="results-meta"><span data-result-count>Loading pieces…</span><button class="text-link" type="button" data-open-enquiry data-enquiry-type="custom">Request a custom piece ↗</button></div>
-        <div class="product-grid" data-product-grid aria-live="polite"><div class="skeleton-grid"><div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div></div></div>
+    </div>
+  </section>
+
+  <section class="hb-section">
+    <div class="hb-wrap" data-reveal>
+      <div class="hb-cta-band">
+        <div>
+          <h2>Not finding the one?</h2>
+          <p>Tell us the colours, occasion or quantity — we'll put something together with you.</p>
+        </div>
+        <div class="hb-cta-band__actions">
+          <a class="hb-btn hb-btn--primary" style="background:#fff;color:var(--rosewood);" href="/contact/">Start a custom enquiry</a>
+        </div>
       </div>
-    </section>
-  </main>
-  <site-footer></site-footer>
-  <script src="/config.js"></script>
-  <script type="module" src="/assets/js/collections.js"></script>
+    </div>
+  </section>
+</main>
+<site-footer></site-footer>
+<script src="/config.js"></script>
+<script type="module" src="/assets/js/components/site-header.js"></script>
+<script type="module" src="/assets/js/components/site-footer.js"></script>
+<script type="module" src="/assets/js/public/site.js"></script>
+<script type="module" src="/assets/js/public/collections.js"></script>
 </body>
 </html>

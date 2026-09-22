@@ -1,32 +1,61 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Product · HUSBA Beads</title>
-  <meta name="description" content="View a handcrafted piece from HUSBA Beads and send a personal product enquiry.">
-  <meta name="theme-color" content="#faf8f5">
-  <meta name="robots" content="index,follow">
-  <link rel="icon" href="/assets/media/brand/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/assets/css/storefront.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title id="page-title">Product · HUSBA Beads</title>
+<meta name="description" id="page-description" content="Handmade beaded jewellery by HUSBA Beads." />
+<link rel="stylesheet" href="/assets/css/public.css" />
+<link rel="icon" href="/assets/media/brand/favicon.svg" type="image/svg+xml">
 </head>
-<body class="product-page">
-  <a class="skip-link" href="#main">Skip to content</a>
-  <div class="page-curtain" aria-hidden="true"><span class="page-curtain__mark">UB</span></div>
-  <site-header></site-header>
-  <main id="main">
-    <nav class="container breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/collections/">Collections</a> / Piece details</nav><div class="container product-view" data-product-shell>
-      <div class="skeleton-card"></div><div class="skeleton-card"></div>
-    </div>
-    <section class="section section--tight" data-related-section hidden>
-      <div class="container">
-        <div class="section-heading"><div><span class="eyebrow">Continue exploring</span><h2>You may also <span class="display-italic">love.</span></h2></div><div class="section-heading__aside"><a class="text-link" href="/collections/">View all pieces ↗</a></div></div>
-        <div class="product-grid" data-related-products></div>
+<body data-husba-public>
+<a href="#main" class="hb-skip">Skip to content</a>
+<site-header></site-header>
+<main id="main">
+  <section class="hb-section hb-section--tight">
+    <div class="hb-wrap">
+      <nav aria-label="Breadcrumb" style="margin-bottom:1.5rem;font-size:var(--step-1);color:var(--ink-faint);">
+        <a href="/collections/">← Back to collections</a>
+      </nav>
+
+      <div id="product-loading">
+        <div class="hb-product">
+          <div class="hb-skeleton" style="aspect-ratio:1;"></div>
+          <div>
+            <div class="hb-skeleton" style="height:2rem;width:70%;margin-bottom:0.75rem;"></div>
+            <div class="hb-skeleton" style="height:1.5rem;width:40%;margin-bottom:1.5rem;"></div>
+            <div class="hb-skeleton" style="height:6rem;"></div>
+          </div>
+        </div>
       </div>
-    </section>
-  </main>
-  <site-footer></site-footer>
-  <script src="/config.js"></script>
-  <script type="module" src="/assets/js/product.js"></script>
+
+      <article class="hb-product" id="product-content" hidden>
+        <div class="hb-gallery">
+          <div class="hb-gallery__stage" id="gallery-stage"></div>
+          <div class="hb-gallery__thumbs" id="gallery-thumbs"></div>
+        </div>
+        <div class="hb-product__info">
+          <h1 id="product-name"></h1>
+          <p class="hb-product__price" id="product-price"></p>
+          <p class="hb-product__availability" id="product-availability"></p>
+          <p class="hb-product__desc" id="product-desc"></p>
+          <dl class="hb-product__facts" id="product-facts" hidden></dl>
+          <div class="hb-product__cta">
+            <a class="hb-btn hb-btn--whatsapp" id="cta-whatsapp" data-whatsapp="919326840719" href="#">Ask on WhatsApp</a>
+            <a class="hb-btn hb-btn--primary" id="cta-enquire" href="/contact/">Send an enquiry</a>
+          </div>
+        </div>
+      </article>
+
+      <p id="product-error" class="hb-error" hidden>We couldn't find that piece — it may have sold out or moved. <a href="/collections/">Browse the full collection</a>.</p>
+    </div>
+  </section>
+</main>
+<site-footer></site-footer>
+<script src="/config.js"></script>
+<script type="module" src="/assets/js/components/site-header.js"></script>
+<script type="module" src="/assets/js/components/site-footer.js"></script>
+<script type="module" src="/assets/js/public/site.js"></script>
+<script type="module" src="/assets/js/public/product.js"></script>
 </body>
 </html>
