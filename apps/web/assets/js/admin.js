@@ -1,3 +1,5 @@
+import {setupLuxuryAdmin, offerUndo} from "./admin-luxury.js";
+import {setupUpdates} from "./admin-update.js";
 import { api, setAdminToken } from "./api.js";
 
 const state = {
@@ -273,6 +275,8 @@ const renderEnquiries = (query = "", filter = "") => {
 
   const items = state.enquiries.filter((item) =>
     (!filter || item.status === filter) &&
+    (!document.querySelector('[data-enquiry-from]')?.value || item.created_at.slice(0,10)>=document.querySelector('[data-enquiry-from]').value) &&
+    (!document.querySelector('[data-enquiry-to]')?.value || item.created_at.slice(0,10)<=document.querySelector('[data-enquiry-to]').value) &&
     `${item.name} ${item.phone} ${item.reference} ${item.product_name}`
       .toLowerCase()
       .includes(needle)
@@ -322,6 +326,7 @@ const renderEnquiries = (query = "", filter = "") => {
 
 const renderSettings = () => {
   const form = document.querySelector("[data-settings-form]");
+  if (form.dataset.dirty === "true") return;
 
   for (const [key, value] of Object.entries(state.settings)) {
     if (form.elements[key]) {
@@ -549,7 +554,8 @@ const openForm = (type, item = null) => {
       preview.loading = "lazy";
       const sync = () => {
         const url = input.value.trim();
-        if (url) {
+        const valid = /^\/assets\/media\//.test(url) || /^https:\/\/(?:res\.cloudinary\.com|[a-z0-9.-]+\.cloudinary\.com)\//i.test(url);
+        if (valid) {
           preview.src = url;
           preview.classList.add("is-visible");
         } else {
@@ -764,14 +770,14 @@ const removeResource = async () => {
   button.disabled = true;
 
   try {
+    if (history.state?.dialog === "confirm") history.back(); else confirmDialog.close();
+    if (!await offerUndo(type)) {toast('Deletion cancelled.'); return;}
     await api.admin(
       `/${resourcePath(type)}/${encodeURIComponent(id)}`,
       { method: "DELETE" }
     );
 
     await reloadResource(type);
-    if (history.state?.dialog === "confirm") history.back();
-    else confirmDialog.close();
     toast(`${type[0].toUpperCase()}${type.slice(1)} removed.`);
   } catch (error) {
     toast(error.message, "error");
@@ -782,6 +788,7 @@ const removeResource = async () => {
 };
 
 const showView = (name, options = {}) => {
+  if (currentView === 'content' && name !== 'content' && document.querySelector('[data-settings-form]').dataset.dirty === 'true' && !confirm('Leave this section? Your unsaved content remains here until you close or refresh the app.')) return;
   currentView = name;
   document.querySelectorAll("[data-view]").forEach((view) => {
     view.hidden = view.dataset.view !== name;
@@ -868,7 +875,7 @@ document.addEventListener("click", async (event) => {
     };
 
     document.querySelector("[data-confirm-message]").textContent =
-      `Remove this ${remove.dataset.delete}? This cannot be undone.`;
+      `Remove this ${remove.dataset.delete}? You will have 8 seconds to undo before deletion.`;
 
     history.pushState({ adminView: currentView, dialog: "confirm" }, "", `#${currentView}`);
     confirmDialog.showModal();
@@ -958,6 +965,7 @@ document
       });
 
       state.settings = result.settings;
+      form.dataset.dirty = "false";
 
       status.className = "form-status is-success";
       status.textContent = "Website content saved.";
@@ -1028,6 +1036,7 @@ const load = async () => {
     state.settings = settings.settings || {};
 
     renderAll();
+    luxury?.refresh();
     hasLoaded = true;
 
     accessScreen.hidden = true;
@@ -1125,23 +1134,6 @@ document
   .querySelector("[data-refresh]")
   .addEventListener("click", load);
 
-document.querySelector("[data-clear-cache]")?.addEventListener("click", async () => {
-  const button = document.querySelector("[data-clear-cache]");
-  button.disabled = true;
-  try {
-    if ("caches" in window) {
-      await Promise.all((await caches.keys()).filter((key) => key.startsWith("husba-admin-")).map((key) => caches.delete(key)));
-    }
-    const registration = await navigator.serviceWorker?.getRegistration("/admin/");
-    await registration?.update();
-    toast("App files refreshed. Reloading…");
-    setTimeout(() => location.reload(), 650);
-  } catch (error) {
-    toast(error.message || "Could not refresh app files.", "error");
-    button.disabled = false;
-  }
-});
-
 const updateConnectionState = () => {
   const online = navigator.onLine;
   const banner = document.querySelector("[data-offline-banner]");
@@ -1200,6 +1192,7 @@ if (validViews.has(requestedView) && requestedView !== "dashboard") {
 }
 window.addEventListener("popstate", (event) => {
   if (resourceDialog.open) {
+    if(resourceFormDirty && !confirm("Discard your unsaved changes?")){history.pushState({adminView:currentView,dialog:"resource"},"",`#${currentView}`);return;}
     resourceFormDirty = false;
     resourceDialog.close();
   }
@@ -1208,7 +1201,7 @@ window.addEventListener("popstate", (event) => {
 });
 
 window.addEventListener("beforeunload", (event) => {
-  if (!resourceFormDirty) return;
+  if (!resourceFormDirty && document.querySelector("[data-settings-form]").dataset.dirty !== "true" && !document.querySelector(".luxe-undo")) return;
   event.preventDefault();
   event.returnValue = "";
 });
@@ -1238,6 +1231,5 @@ window.addEventListener("appinstalled", () => {
   installButton.hidden = true;
 });
 if (isStandalone) installButton.hidden = true;
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => navigator.serviceWorker.register("/admin/sw.js", { scope: "/admin/" }).catch(() => {}));
-}
+setupUpdates(()=>resourceFormDirty || document.querySelector('[data-settings-form]').dataset.dirty === 'true' || !!document.querySelector('.luxe-undo')).catch(()=>{});
+const luxury = setupLuxuryAdmin({state,api,renderAll,openForm,showView,toast,productPayloadFromItem,reload:load});

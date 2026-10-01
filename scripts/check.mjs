@@ -25,7 +25,7 @@ const walk = async (directory) => {
   return files;
 };
 
-const javascript = [...(await walk(path.join(root, "dist"))), ...(await walk(path.join(root, "worker", "src")))]
+const javascript = [...(await walk(path.join(root, "dist"))), ...(await walk(path.join(root, "worker", "src"))), ...(await walk(path.join(root, "functions"))), ...(await walk(path.join(root, "server")))]
   .filter((file) => file.endsWith(".js"));
 for (const file of javascript) {
   const result = spawnSync(process.execPath, ["--check", file], { encoding: "utf8" });

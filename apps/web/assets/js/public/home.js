@@ -1,3 +1,4 @@
+import {refreshLuxury} from "./luxury.js";
 import {getBootstrap, getVideos, escapeHtml as e, safeMedia, safeLink} from './api.js';
 import {productCardHtml, reelHtml} from './cards.js';
 import {refreshMedia,initHero} from './site.js';
@@ -27,7 +28,7 @@ async function init(){
   grid.innerHTML=data.featured.length?data.featured.slice(0,8).map(productCardHtml).join(''):'<p class="hb-empty">New pieces are on their way. <a href="/contact/">Ask about a custom design ↗</a></p>';
   cats.innerHTML=data.categories.length?data.categories.map((c,i)=>`<a class="hb-cat" data-reveal href="/collections/?category=${encodeURIComponent(c.slug)}" style="--i:${i}"><div class="hb-cat__img"><img src="${e(c.image)}" alt="${e(c.name)}" loading="lazy"></div><div class="hb-cat__label">${e(c.name)}</div></a>`).join(''):'<p class="hb-empty">Collections are being curated.</p>';
  }catch{grid.innerHTML='<p class="hb-error">Products are temporarily unavailable. Please refresh or <a href="/contact/">contact us</a>.</p>';cats.innerHTML='<p class="hb-empty">Please try the collections again shortly.</p>';}
- refreshMedia();
+ refreshMedia();refreshLuxury();
 }
-async function videos(){try{const data=await getVideos();reels.innerHTML=data.length?data.slice(0,4).map((v,i)=>reelHtml(v,i,{controls:false})).join(''):'<p class="hb-empty">New films are coming soon.</p>';}catch{reels.innerHTML='<p class="hb-error">Films are temporarily unavailable.</p>';}refreshMedia();}
+async function videos(){try{const data=await getVideos();reels.innerHTML=data.length?data.slice(0,4).map((v,i)=>reelHtml(v,i,{controls:false})).join(''):'<p class="hb-empty">New films are coming soon.</p>';}catch{reels.innerHTML='<p class="hb-error">Films are temporarily unavailable.</p>';}refreshMedia();refreshLuxury();}
 init();videos();

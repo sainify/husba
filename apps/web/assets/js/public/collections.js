@@ -36,6 +36,7 @@ async function renderProducts() {
       ? products.map(cardHtml).join('')
       : '<p class="hb-empty">No pieces match that search yet — try a different filter, or send us a custom enquiry.</p>';
   } catch (err) {
+    if(current!==generation)return;
     grid.innerHTML = '<p class="hb-error">Couldn\u2019t load products right now. Please refresh.</p>';
   }
   if(current!==generation)return;

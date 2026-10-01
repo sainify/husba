@@ -1,3 +1,4 @@
+import {setupLuxuryPublic} from './luxury.js';
 import {getBootstrap, safeMedia, safeLink} from './api.js';
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 export function whatsappLink(phone,text) {return `https://wa.me/${String(phone).replace(/\D/g,'')}?text=${encodeURIComponent(text)}`;}
@@ -5,8 +6,9 @@ export function updateWhatsApp(phone='919004931823') {
   document.querySelectorAll('[data-whatsapp]').forEach(btn => {
     btn.dataset.whatsapp=phone;
     const name=btn.dataset.productName;
+    const code=btn.dataset.productCode;
     const url=btn.dataset.productUrl || location.href;
-    btn.href=whatsappLink(phone,name ? `Hi HUSBA Beads! I'm interested in "${name}" (${url}). Please share price, availability and ordering details.` : "Hi HUSBA Beads! I'd like to know more about your handmade pieces.");
+    btn.href=whatsappLink(phone,name ? `Hi HUSBA Beads! I'm interested in "${name}"${code ? " ["+code+"]" : ""} (${url}). Please share price, availability and ordering details.` : "Hi HUSBA Beads! I'd like to know more about your handmade pieces.");
     btn.target='_blank';btn.rel='noopener';
   });
 }
@@ -16,6 +18,12 @@ const videoObserver = 'IntersectionObserver' in window ? new IntersectionObserve
   if(isIntersecting){if(!v.getAttribute('src')) v.src=v.dataset.src;if(!reduced() && !navigator.connection?.saveData && !v.dataset.userPaused && !document.hidden)v.play().catch(()=>{});}else v.pause();
 }),{threshold:.5}) : null;
 export function refreshMedia() {
+  document.querySelectorAll('img').forEach(img=>{
+    if(img.dataset.fallbackBound)return; img.dataset.fallbackBound='true';
+    const fail=()=>{if(img.dataset.failed)return;img.dataset.failed='true';img.removeAttribute('srcset');img.src='/assets/media/brand/image-unavailable.svg';img.alt=img.alt ? img.alt+' — image unavailable' : 'Image unavailable';};
+    img.addEventListener('error',fail);
+    if(img.complete && !img.naturalWidth && img.getAttribute('src'))fail();
+  });
   document.querySelectorAll('[data-reveal]').forEach(el=>{
     if(observed.has(el))return; observed.add(el);
     if(!revealObserver || reduced())el.classList.add('is-visible');else revealObserver.observe(el);
@@ -51,8 +59,10 @@ function initHeader(){
     btn.setAttribute('aria-expanded',String(open));btn.setAttribute('aria-label',open?'Close menu':'Open menu');
     document.body.style.overflow=open?'hidden':'';
     document.querySelector('main')?.toggleAttribute('inert',open);document.querySelector('site-footer')?.toggleAttribute('inert',open);
-    if(!open)btn.focus();
+    if(open) menu.querySelector('a')?.focus(); else btn.focus();
   };
+  document.addEventListener('pointerdown',e=>{if(menu.dataset.open==='true' && !menu.contains(e.target) && !header.contains(e.target))setOpen(false);});
+  window.addEventListener('hashchange',()=>{if(menu.dataset.open==='true')setOpen(false);});
   btn.addEventListener('click',()=>setOpen(menu.dataset.open!=='true'));
   menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setOpen(false)));
   window.addEventListener('keydown',e=>{
@@ -68,7 +78,7 @@ async function settings(){
  try{
   const {settings:s}=await getBootstrap();updateWhatsApp(String(s.whatsapp_number||'919004931823').replace(/\D/g,''));
   const messages=[s.announcement_1,s.announcement_2,s.announcement_3].filter(v=>String(v||'').trim());
-  const bar=document.querySelector('#hb-announce');if(bar){bar.hidden=!messages.length;bar.textContent=messages.join(' · ');}
+  const bar=document.querySelector('#hb-announce');if(bar){bar.hidden=!messages.length;bar.textContent=messages[0]||'';if(messages.length>1&&!reduced()){let i=0;setInterval(()=>{if(document.hidden)return;i=(i+1)%messages.length;bar.textContent=messages[i];bar.animate([{opacity:0,transform:'translateY(3px)'},{opacity:1,transform:'translateY(0)'}],{duration:250});},6000);}}
   if(s.logo_url){const mark=document.querySelector('.hb-header__mark');const img=document.createElement('img');img.src=safeMedia(s.logo_url,'/assets/media/brand/original-logo.webp');img.alt='HUSBA Beads';img.className='hb-brand-logo';mark.prepend(img);}
   const social=document.querySelector('.hb-footer__social');
   for(const [key,label] of [['facebook_url','Facebook'],['youtube_url','YouTube'],['pinterest_url','Pinterest'],['tiktok_url','TikTok']]){
@@ -78,5 +88,5 @@ async function settings(){
   document.querySelectorAll('a[href*="instagram.com"]').forEach(a=>{a.hidden=!s.instagram_url;if(s.instagram_url)a.href=safeLink(s.instagram_url,'https://www.instagram.com/husba.beads/');});
  }catch{ /* Keep real static content and honest product error states. */ }
 }
-function init(){if(document.body.dataset.husbaInitialized==='true')return;document.body.dataset.husbaInitialized='true';initHeader();refreshMedia();updateWhatsApp();settings();document.addEventListener('visibilitychange',()=>{if(document.hidden)document.querySelectorAll('video').forEach(v=>v.pause());});}
+function init(){if(document.body.dataset.husbaInitialized==='true')return;document.body.dataset.husbaInitialized='true';initHeader();setupLuxuryPublic();refreshMedia();updateWhatsApp();settings();document.addEventListener('visibilitychange',()=>{if(document.hidden)document.querySelectorAll('video').forEach(v=>v.pause());});}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();

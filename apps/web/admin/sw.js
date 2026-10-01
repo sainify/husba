@@ -1,14 +1,15 @@
-const CACHE = "husba-admin-v15";
+const CACHE = "husba-admin-v17-atelier-20261001";
 const SHELL = [
   "/admin/", "/admin/manifest.webmanifest",
   "/admin/icons/admin-192.png", "/admin/icons/admin-512.png",
   "/assets/css/styles.css", "/assets/css/admin.css",
-  "/assets/js/admin.js", "/assets/js/api.js",
+  "/assets/js/admin.js", "/assets/js/api.js", "/assets/js/admin-luxury.js", "/assets/js/admin-update.js", "/assets/css/luxury.css",
   "/assets/media/brand/original-logo.webp"
 ];
 self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL)).then(() => self.skipWaiting()));
+  event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL)));
 });
+self.addEventListener("message", event => {if(event.data?.type === "ACTIVATE_UPDATE") self.skipWaiting();});
 self.addEventListener("activate", (event) => {
   event.waitUntil(caches.keys().then((keys) => Promise.all(
     keys.filter((key) => key.startsWith("husba-admin-") && key !== CACHE).map((key) => caches.delete(key))

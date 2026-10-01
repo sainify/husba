@@ -97,7 +97,7 @@ const json = (payload, status = 200, headers = {}) => new Response(JSON.stringif
   status,
   headers: {
     "Content-Type": "application/json; charset=utf-8",
-    "Cache-Control": status >= 400 ? "no-store" : "no-cache",
+    "Cache-Control": "no-store",
     "X-Content-Type-Options": "nosniff",
     ...headers,
   },
@@ -200,9 +200,9 @@ const listProducts = async (env, options = {}) => {
   }
   if (options.featured) clauses.push("p.is_featured = 1");
   const where = clauses.length ? `WHERE ${clauses.join(" AND ")}` : "";
-  const limit = boundedInteger(options.limit, 1, 100, 48);
+  const limit = boundedInteger(options.limit == null || String(options.limit).trim() === "" ? 48 : options.limit, 1, 100, 48);
   const offset = boundedInteger(options.offset, 0, 100_000, 0);
-  const select = `SELECT p.*, c.name AS category_name, c.slug AS category_slug FROM products p LEFT JOIN categories c ON c.id = p.category_id ${where} ORDER BY p.is_featured DESC, p.sort_order ASC, p.created_at DESC LIMIT ? OFFSET ?`;
+  const select = `SELECT p.*, c.name AS category_name, c.slug AS category_slug FROM products p LEFT JOIN categories c ON c.id = p.category_id ${where} ORDER BY p.is_featured DESC, p.sort_order ASC, p.created_at DESC, p.id ASC LIMIT ? OFFSET ?`;
   const count = `SELECT COUNT(*) AS total FROM products p LEFT JOIN categories c ON c.id = p.category_id ${where}`;
   const db = requireDatabase(env);
   const [rows, total] = await Promise.all([
@@ -231,7 +231,7 @@ const listVideos = async (env, includeInactive = false) => {
     FROM product_videos v
     LEFT JOIN products p ON p.id = v.product_id
     LEFT JOIN categories c ON c.id = p.category_id
-    ${includeInactive ? "" : "WHERE v.is_active = 1"}
+    ${includeInactive ? "" : "WHERE v.is_active = 1 AND (v.product_id IS NULL OR p.is_active = 1)"}
     ORDER BY v.sort_order ASC, v.created_at DESC
   `).all();
   return (result.results || []).map((row) => mapBooleans(row, ["is_featured", "is_active"]));
@@ -697,7 +697,7 @@ const handleAdmin = async (request, env, url, parts, identity) => {
   }
 
   if (resource === "products") {
-    if (method === "GET") return json(await listProducts(env, { includeInactive: url.searchParams.get("include_inactive") === "1", limit: 100 }));
+    if (method === "GET") return json(await listProducts(env, { includeInactive: url.searchParams.get("include_inactive") === "1", limit: url.searchParams.get("limit") || 100, offset: url.searchParams.get("offset") || 0 }));
     if (method === "POST") return json({ product: await saveProduct(env, await readJson(request)) }, 201);
     if (method === "PUT" && id) return json({ product: await saveProduct(env, await readJson(request), id) });
     if (method === "DELETE" && id) {

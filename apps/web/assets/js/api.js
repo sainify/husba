@@ -330,7 +330,18 @@ export const api = {
     });
   },
 
-  admin(pathname, options = {}) {
+  async admin(pathname, options = {}) {
+    if (pathname.startsWith('/products?') && !options.method && !pathname.includes('offset=')) {
+      const list = []; let offset = 0;
+      while (true) {
+        const data = await request(`/api/admin${pathname}&limit=100&offset=${offset}`, options);
+        const rows = data.products || [];
+        if (!rows.length && offset < Number(data.total)) throw new Error('Incomplete product list. Please retry.');
+        if (rows.some(p => list.some(old => old.id === p.id))) throw new Error('Product pagination repeated. Deploy the updated Worker and retry.');
+        list.push(...rows); offset += rows.length;
+        if (offset >= Number(data.total) || !rows.length) return {...data, products:list};
+      }
+    }
     return request(
       `/api/admin${pathname}`,
       options

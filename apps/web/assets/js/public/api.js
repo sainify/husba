@@ -17,7 +17,7 @@ async function request(path, options = {}) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 15000);
   try {
-    const response = await fetch(`${API_BASE}/api${path}`, { ...options, signal: controller.signal, credentials: 'omit', headers: {Accept:'application/json', ...(options.body ? {'Content-Type':'application/json'} : {}), ...options.headers} });
+    const response = await fetch(`${API_BASE}/api${path}`, { ...options, signal: controller.signal, credentials: 'omit', cache: 'no-store', headers: {Accept:'application/json', ...(options.body ? {'Content-Type':'application/json'} : {}), ...options.headers} });
     const data = response.headers.get('content-type')?.includes('application/json') ? await response.json() : null;
     if (!response.ok || !data) throw new Error(data?.error?.message || 'The website service is unavailable. Please try again.');
     return data;
@@ -41,7 +41,10 @@ export function normalizeProduct(p) {
     facts:Object.fromEntries([['Materials',p.materials],['Colours',p.colors],['Size',p.sizes],['Product code',p.product_code]].filter(([,v])=>v)) };
 }
 let bootstrapPromise, productsPromise;
+let bootstrapAt=0, productsAt=0;
+const TTL=15000;
 export function getBootstrap() {
+  if (Date.now()-bootstrapAt>TTL) {bootstrapPromise=null; bootstrapAt=Date.now();}
   bootstrapPromise ||= request('/bootstrap').then(data => {
     let images = {}; try { images = JSON.parse(data.settings?.category_images || '{}') || {}; } catch {}
     return {settings:data.settings || {}, categories:(data.categories || []).map(c => ({id:c.id,slug:c.slug,name:c.name,image:safeMedia(images[c.slug])})), featured:(data.products || []).map(normalizeProduct), videos:(data.videos || []).map(normalizeVideo)};
@@ -52,12 +55,15 @@ async function allProducts() {
   const products = []; let offset = 0;
   while (true) {
     const data = await request(`/products?limit=100&offset=${offset}`);
-    products.push(...(data.products || [])); offset = products.length;
-    if (!data.products?.length || offset >= data.total || data.products.length < 100) break;
+    const rows=data.products || [];
+    if ((!rows.length && offset < Number(data.total)) || rows.some(p=>products.some(old=>old.id===p.id))) throw new Error('The full collection could not be loaded. Please retry.');
+    products.push(...rows); offset += rows.length;
+    if (offset >= Number(data.total) || !rows.length) break;
   }
-  return products.map(normalizeProduct);
+  return products.filter(p=>![false,0,"0"].includes(p.is_active)).map(normalizeProduct);
 }
 export async function getProducts({category, search, availableOnly} = {}) {
+  if (Date.now()-productsAt>TTL) {productsPromise=null; productsAt=Date.now();}
   productsPromise ||= allProducts().catch(e => {productsPromise = null; throw e;});
   let list = [...await productsPromise];
   if (category) list = list.filter(p => String(p.categoryId) === String(category) || p.categorySlug === category);

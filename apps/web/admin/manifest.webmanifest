@@ -8,8 +8,8 @@
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait-primary",
-  "background_color": "#f5f5f7",
-  "theme_color": "#f5f5f7",
+  "background_color": "#faf6f1",
+  "theme_color": "#faf6f1",
   "shortcuts": [
     { "name": "Products", "short_name": "Products", "url": "/admin/#products", "icons": [{ "src": "/admin/icons/admin-192.png", "sizes": "192x192" }] },
     { "name": "Enquiries", "short_name": "Enquiries", "url": "/admin/#enquiries", "icons": [{ "src": "/admin/icons/admin-192.png", "sizes": "192x192" }] }

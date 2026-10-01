@@ -3,11 +3,11 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 const source=await readFile(new URL('../apps/web/assets/js/public/site.js',import.meta.url),'utf8');
-function element(){return{dataset:{},style:{},listeners:{},attrs:{},addEventListener(type,fn){(this.listeners[type]||=[]).push(fn);},setAttribute(k,v){this.attrs[k]=v;},toggleAttribute(k,v){if(v)this.attrs[k]='';else delete this.attrs[k];},focus(){},getBoundingClientRect(){return{bottom:72};},querySelectorAll(){return[];}};}
+function element(){return{dataset:{},style:{},listeners:{},attrs:{},addEventListener(type,fn){(this.listeners[type]||=[]).push(fn);},setAttribute(k,v){this.attrs[k]=v;},toggleAttribute(k,v){if(v)this.attrs[k]='';else delete this.attrs[k];},focus(){},getBoundingClientRect(){return{bottom:72};},contains(){return false;},querySelector(){return null;},querySelectorAll(){return[];}};}
 test('repeated menu initialization installs one toggle and restores page interaction',()=>{
  const header=element(),menu=element(),button=element(),main=element(),footer=element();menu.dataset.open='false';menu.inert=true;
  const nodes={'.hb-header':header,'.hb-mobile-menu':menu,'.hb-menu-btn':button,main,'site-footer':footer};
- const document={querySelector:s=>nodes[s],body:{style:{}}};
+ const document={addEventListener(){},querySelector:s=>nodes[s],body:{style:{}}};
  const ctx={document,window:{addEventListener(){}},scrollY:0,innerWidth:390};vm.createContext(ctx);
  const fn=source.slice(source.indexOf('function initHeader(){'),source.indexOf('async function settings(){'));
  vm.runInContext(fn+';initHeader();initHeader();',ctx);
