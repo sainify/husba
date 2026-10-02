@@ -1,0 +1,127 @@
+{
+  "settings": {
+    "brand_name": "HUSBA Beads",
+    "announcement": "Handmade in India · Custom and bulk enquiries welcome",
+    "hero_title": "Small details. Made personal.",
+    "hero_copy": "Delicate beaded pieces thoughtfully made for everyday moments, meaningful gifts and designs that feel entirely your own.",
+    "instagram_url": "https://www.instagram.com/husba.beads/",
+    "whatsapp_number": "919004931823",
+    "whatsapp_display": "",
+    "email": "",
+    "location": "India"
+  },
+  "categories": [
+    { "id": "cat_bracelets", "name": "Bracelets", "slug": "bracelets", "description": "Delicate wrist details", "sort_order": 1 },
+    { "id": "cat_earrings", "name": "Earrings", "slug": "earrings", "description": "Light-catching handmade pairs", "sort_order": 2 },
+    { "id": "cat_necklaces", "name": "Necklaces", "slug": "necklaces", "description": "Layerable beaded accents", "sort_order": 3 },
+    { "id": "cat_custom", "name": "Custom pieces", "slug": "custom", "description": "Made around your idea", "sort_order": 4 }
+  ],
+  "products": [
+    {
+      "id": "sample_pearl_glow",
+      "category_id": "cat_necklaces",
+      "category_name": "Necklaces & sets",
+      "category_slug": "necklaces",
+      "name": "Pearl Glow Set",
+      "slug": "pearl-glow-set",
+      "product_code": "HB-SAMPLE-01",
+      "description": "A delicate pearl, crystal and champagne-gold edit designed to bring a quiet glow to everyday and occasion looks.",
+      "materials": "Glass pearls, crystal beads and gold-toned findings",
+      "colors": "Pearl ivory and champagne gold",
+      "sizes": "Confirmed personally with your enquiry",
+      "status": "made_to_order",
+      "show_price": false,
+      "price_minor": null,
+      "price_label": "",
+      "currency": "INR",
+      "is_featured": true,
+      "is_new": true,
+      "primary_image_url": "/assets/media/products/pearl-glow-hero.webp",
+      "created_at": "2026-09-01T00:00:00Z",
+      "media": [
+        { "id": "m_1", "media_type": "image", "url": "/assets/media/products/pearl-glow-hero.webp", "alt_text": "Pearl and champagne-gold handmade jewellery on ivory silk", "sort_order": 1 },
+        { "id": "m_2", "media_type": "image", "url": "/assets/media/products/blush-bloom.webp", "alt_text": "Blush flower earrings and a slim beaded anklet", "sort_order": 2 }
+      ]
+    },
+    {
+      "id": "sample_meadow",
+      "category_id": "cat_bracelets",
+      "category_name": "Bracelets",
+      "category_slug": "bracelets",
+      "name": "Meadow Bracelet",
+      "slug": "meadow-bracelet",
+      "product_code": "HB-SAMPLE-02",
+      "description": "A soft mix of turquoise, coral, pearl and amber glass beads finished with restrained gold-toned accents.",
+      "materials": "Glass beads, pearl accents and gold-toned clasp",
+      "colors": "Turquoise, coral, pearl and amber",
+      "sizes": "Custom sizing available",
+      "status": "available",
+      "show_price": false,
+      "price_minor": null,
+      "price_label": "",
+      "currency": "INR",
+      "is_featured": true,
+      "is_new": false,
+      "primary_image_url": "/assets/media/products/meadow-bracelet.webp",
+      "created_at": "2026-08-28T00:00:00Z",
+      "media": [
+        { "id": "m_3", "media_type": "image", "url": "/assets/media/products/meadow-bracelet.webp", "alt_text": "Multicolour handmade glass-bead bracelet", "sort_order": 1 }
+      ]
+    },
+    {
+      "id": "sample_blush_bloom",
+      "category_id": "cat_earrings",
+      "category_name": "Earrings",
+      "category_slug": "earrings",
+      "name": "Blush Bloom",
+      "slug": "blush-bloom",
+      "product_code": "HB-SAMPLE-03",
+      "description": "Translucent flower-bead earrings paired with delicate blush details for a feminine, quietly playful finish.",
+      "materials": "Translucent glass beads and gold-toned findings",
+      "colors": "Blush, pearl and muted berry",
+      "sizes": "One size; matching custom pieces available",
+      "status": "made_to_order",
+      "show_price": false,
+      "price_minor": null,
+      "price_label": "",
+      "currency": "INR",
+      "is_featured": true,
+      "is_new": true,
+      "primary_image_url": "/assets/media/products/blush-bloom.webp",
+      "created_at": "2026-09-05T00:00:00Z",
+      "media": [
+        { "id": "m_4", "media_type": "image", "url": "/assets/media/products/blush-bloom.webp", "alt_text": "Blush flower-bead earrings and matching anklet", "sort_order": 1 }
+      ]
+    }
+  ],
+  "videos": [
+    {
+      "id": "sample_film_1",
+      "title": "Blush Bloom in detail",
+      "caption": "A closer look at translucent petals, muted berry accents and the movement of this handmade piece.",
+      "video_url": "",
+      "poster_url": "/assets/media/products/blush-bloom.webp",
+      "poster_alt": "Blush flower-bead earrings and a matching anklet",
+      "product_id": "sample_blush_bloom",
+      "product_name": "Blush Bloom",
+      "is_featured": true,
+      "sort_order": 1
+    },
+    {
+      "id": "sample_film_2",
+      "title": "Colour, one bead at a time",
+      "caption": "Turquoise, coral, pearl and amber come together in a light, joyful bracelet.",
+      "video_url": "",
+      "poster_url": "/assets/media/products/meadow-bracelet.webp",
+      "poster_alt": "Multicolour handmade glass-bead bracelet",
+      "product_id": "sample_meadow",
+      "product_name": "Meadow Bracelet",
+      "is_featured": false,
+      "sort_order": 2
+    }
+  ],
+  "reviews": [
+    { "id": "brand_quote_1", "customer_name": "The HUSBA promise", "location": "Handmade in India", "quote": "A thoughtful piece feels different when every detail has been chosen with care.", "rating": 5 },
+    { "id": "brand_quote_2", "customer_name": "Custom made", "location": "Around your idea", "quote": "Begin with a colour, a person or a moment—we will help shape the details from there.", "rating": 5 }
+  ]
+}

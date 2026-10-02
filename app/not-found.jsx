@@ -1,0 +1,1 @@
+export default function NotFound(){return <section className="editorial"><p className="eyebrow">PAGE NOT FOUND</p><h1>Let’s find your <em>way back.</em></h1><a className="button" href="/collections/">Explore the collection ↗</a></section>}
