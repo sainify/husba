@@ -94,7 +94,7 @@ export class ApiError extends Error {
 }
 
 const request = async (pathname, options = {}) => {
-  if (pathname.startsWith("/api/admin")) await sessionReady;
+  if (pathname.startsWith("/api/admin") && !getAdminToken()) await sessionReady;
   const headers = new Headers(options.headers || {});
 
   if (
@@ -141,7 +141,7 @@ const request = async (pathname, options = {}) => {
 
   // The Worker refreshes the long-lived admin session when /session is checked.
   // Persist that refreshed token so reopening the PWA does not sign the admin out.
-  if (response.ok && pathname === "/api/admin/session" && body?.token) {
+  if (response.ok && ["/api/admin/session", "/api/admin/workspace"].includes(pathname) && body?.token) {
     setAdminToken(body.token);
   }
 

@@ -1,0 +1,24 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {DatabaseSync} from 'node:sqlite';
+import worker from '../worker/src/index.js';
+test('workspace authenticates, refreshes token, preserves full pagination and avoids repeat schema writes', async()=>{
+ const db=new DatabaseSync(':memory:');db.exec(await readFile(new URL('../worker/migrations/0001_initial.sql',import.meta.url),'utf8'));
+ db.exec("INSERT INTO categories(id,name,slug) VALUES('c','Test','test')");
+ for(let i=0;i<105;i++) db.prepare('INSERT INTO products(id,name,slug,category_id) VALUES(?,?,?,?)').run('p'+i,'Test '+i,'test-'+i,'c');
+ let creates=0;
+ const DB={prepare(sql){if(sql.startsWith('CREATE TABLE'))creates++;let values=[];return {bind(...args){values=args;return this},async all(){return {results:db.prepare(sql).all(...values)}},async first(){return db.prepare(sql).get(...values)||null},async run(){return db.prepare(sql).run(...values)}}},async batch(statements){return Promise.all(statements.map(s=>s.all()))}};
+ const env={DB,ADMIN_EMAIL:'admin@example.com',ADMIN_PASSWORD:'testing-only-password',ALLOWED_ORIGINS:'https://husba.pages.dev'};
+ const request=(path,token)=>worker.fetch(new Request('https://api.example/api/admin/'+path,{headers:token?{Authorization:'Bearer '+token}:{}}),env,{});
+ assert.equal((await request('workspace')).status,401);
+ const payload=Buffer.from(JSON.stringify({email:env.ADMIN_EMAIL,exp:Math.floor(Date.now()/1000)+1000})).toString('base64url');
+ const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(env.ADMIN_PASSWORD),{name:'HMAC',hash:'SHA-256'},false,['sign']);
+ const token=payload+'.'+Buffer.from(await crypto.subtle.sign('HMAC',key,new TextEncoder().encode(payload))).toString('base64url');
+ const response=await request('workspace',token);assert.equal(response.status,200);assert.match(response.headers.get('cache-control'),/no-store/);
+ const data=await response.json();assert.equal(data.products.length,100);assert.equal(data.total,105);assert.ok(data.token);assert.equal(data.dashboard.counts.products,105);
+ const before=creates;const next=await request('products?include_inactive=1&limit=100&offset=100',data.token);assert.equal((await next.json()).products.length,5);assert.equal(creates,before);
+ db.prepare('UPDATE admin_credentials SET email=? WHERE id=1').run('other@example.com');
+ db.exec("INSERT OR REPLACE INTO admin_credentials(id,email,password_hash,password_salt) VALUES(1,'other@example.com','hash','salt')");
+ assert.equal((await request('workspace',data.token)).status,403);db.close();
+});

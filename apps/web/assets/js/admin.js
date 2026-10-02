@@ -701,13 +701,12 @@ const resourcePath = (type) => ({
 const reloadResource = async (type) => {
   const path = resourcePath(type);
 
-  const result = await api.admin(
-    `/${path}${type === "enquiry" ? "" : "?include_inactive=1"}`
-  );
-
+  const [result, dashboard] = await Promise.all([
+    api.admin(`/${path}${type === "enquiry" ? "" : "?include_inactive=1"}`),
+    api.admin("/dashboard")
+  ]);
   state[path] = result[path] || [];
-
-  state.dashboard = (await api.admin("/dashboard")).dashboard;
+  state.dashboard = dashboard.dashboard;
 
   renderAll();
 };
@@ -728,7 +727,7 @@ resourceForm.addEventListener("submit", async (event) => {
 
   try {
     const resourcePayload = payloadFromForm(type, resourceForm);
-    await api.admin(
+    const saved = await api.admin(
       `/${resourcePath(type)}${id ? `/${encodeURIComponent(id)}` : ""}`,
       {
         method: id ? "PUT" : "POST",
@@ -749,7 +748,17 @@ resourceForm.addEventListener("submit", async (event) => {
       state.settings = { ...state.settings, category_images: JSON.stringify(map) };
     }
 
-    await reloadResource(type);
+    if (saved[type]?.id) {
+      const path = resourcePath(type);
+      const index = state[path].findIndex(item => item.id === saved[type].id);
+      if (index < 0) state[path].push(saved[type]);
+      else state[path][index] = saved[type];
+      renderAll();
+      luxury?.refresh();
+      api.admin("/dashboard").then(result => { state.dashboard = result.dashboard; renderDashboard(); }).catch(() => {});
+    } else {
+      await reloadResource(type);
+    }
     resourceFormDirty = false;
     closeResourceDialog(true);
     toast(`${type[0].toUpperCase()}${type.slice(1)} saved.`);
@@ -1010,30 +1019,21 @@ const load = async () => {
   if (accessMessage) accessMessage.textContent = "Checking your secure admin session…";
 
   try {
-    const [
-      session,
-      dashboard,
-      products,
-      categories,
-      videos,
-      enquiries,
-      settings
-    ] = await Promise.all([
-      api.admin("/session"),
-      api.admin("/dashboard"),
-      api.admin("/products?include_inactive=1"),
-      api.admin("/categories?include_inactive=1"),
-      api.admin("/videos?include_inactive=1"),
-      api.admin("/enquiries"),
-      api.admin("/settings")
-    ]);
-
-    state.dashboard = dashboard.dashboard || {};
-    state.products = products.products || [];
-    state.categories = categories.categories || [];
-    state.videos = videos.videos || [];
-    state.enquiries = enquiries.enquiries || [];
-    state.settings = settings.settings || {};
+    const workspace = await api.admin("/workspace");
+    state.dashboard = workspace.dashboard || {};
+    state.products = workspace.products || [];
+    // Preserve complete catalogues beyond the first page.
+    let offset = state.products.length;
+    while (offset < Number(workspace.total)) {
+      const page = await api.admin(`/products?include_inactive=1&limit=100&offset=${offset}`);
+      if (!page.products?.length || page.products.some(p => state.products.some(old => old.id === p.id))) throw new Error("Incomplete product list. Please refresh.");
+      state.products.push(...page.products);
+      offset = state.products.length;
+    }
+    state.categories = workspace.categories || [];
+    state.videos = workspace.videos || [];
+    state.enquiries = workspace.enquiries || [];
+    state.settings = workspace.settings || {};
 
     renderAll();
     luxury?.refresh();

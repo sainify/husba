@@ -1,4 +1,4 @@
-const CACHE = "husba-admin-v17-atelier-20261001";
+const CACHE = "husba-admin-v18-speed-20261002";
 const SHELL = [
   "/admin/", "/admin/manifest.webmanifest",
   "/admin/icons/admin-192.png", "/admin/icons/admin-512.png",

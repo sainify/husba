@@ -359,8 +359,14 @@ const passwordHash = async (password, salt) => {
 
 const currentAdminCredential = async (env) => {
   const db = requireDatabase(env);
-  await ensureAdminCredentials(db);
-  const stored = await db.prepare("SELECT email, password_hash, password_salt FROM admin_credentials WHERE id = 1").first();
+  let stored;
+  try {
+    stored = await db.prepare("SELECT email, password_hash, password_salt FROM admin_credentials WHERE id = 1").first();
+  } catch (error) {
+    if (!String(error.message).includes("no such table: admin_credentials")) throw error;
+    await ensureAdminCredentials(db);
+    stored = await db.prepare("SELECT email, password_hash, password_salt FROM admin_credentials WHERE id = 1").first();
+  }
   if (stored) return { ...stored, stored: true };
   return {
     email: String(env.ADMIN_EMAIL || "").trim().toLowerCase(),
@@ -566,8 +572,7 @@ const saveProduct = async (env, input, id = null) => {
     if (String(error.message).includes("UNIQUE")) throw new HttpError(409, "That product URL slug is already in use.");
     throw error;
   }
-  const row = await db.prepare("SELECT slug FROM products WHERE id = ?").bind(productId).first();
-  return getProductBySlug(env, row.slug, true);
+  return getProductBySlug(env, product.slug, true);
 };
 
 const listEnquiries = async (env, url) => {
@@ -628,6 +633,17 @@ const handleAdmin = async (request, env, url, parts, identity) => {
   }
 
   const db = requireDatabase(env);
+
+  if (resource === "workspace" && method === "GET") {
+    const [dashboard, catalogue, categories, videos, enquiries, settings] = await Promise.all([
+      adminDashboard(env), listProducts(env, {includeInactive: true, limit: 100}),
+      getCategories(env, true), listVideos(env, true), listEnquiries(env, url), getSettings(env)
+    ]);
+    const expiresAt = Math.floor(Date.now() / 1000) + 365 * 24 * 60 * 60;
+    const token = await signSession(identity.email || "admin", expiresAt, env);
+    return json({dashboard, ...catalogue, categories, videos, enquiries, settings, token}, 200,
+      {"Cache-Control": "private, no-store", "Set-Cookie": adminSessionCookie(token)});
+  }
 
   if (resource === "dashboard" && method === "GET") return json({ dashboard: await adminDashboard(env) });
 
