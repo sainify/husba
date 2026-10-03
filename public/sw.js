@@ -1,4 +1,4 @@
-const CACHE = 'husba-public-v1-20261002';
+const CACHE = 'husba-public-v2-thread-20261002';
 const SHELL = ['/offline.html', '/icons/husba-192.png', '/icons/husba-512.png'];
 self.addEventListener('install', event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL))));
 self.addEventListener('activate', event => event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('husba-public-') && key !== CACHE).map(key => caches.delete(key)))).then(() => self.clients.claim())));

@@ -1,4 +1,4 @@
-const CACHE = 'husba-admin-v19-next-20261002';
+const CACHE = 'husba-admin-v20-thread-20261002';
 const SHELL = ['/admin/manifest.webmanifest','/admin/icons/admin-192.png','/admin/icons/admin-512.png'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL))));
 self.addEventListener('message',event=>{if(event.data?.type==='ACTIVATE_UPDATE')self.skipWaiting()});
